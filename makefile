@@ -6,7 +6,7 @@
 #    By: davifern <davifern@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/19 11:04:27 by davifern          #+#    #+#              #
-#    Updated: 2024/02/19 11:33:52 by davifern         ###   ########.fr        #
+#    Updated: 2024/02/19 13:55:46 by davifern         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 NAME = philo
 MAKE = make
 HEADER = philo.h
-SRC = main.c
+SRC = main.c utils.c
 CC = gcc
 CFLAGS += -Wextra -Werror -Wall -g
 

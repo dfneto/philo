@@ -6,43 +6,33 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/19 12:42:15 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/19 14:07:19 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-int	check_input(int argc, char **argv)
-{
-	int	i;
-
-	i = 0;
-	if (argc < 5 || argc > 6)
-	{
-		printf("You have to pass 4 ou 5 args: number_of_philosophers, "
-			"time_to_die, time_to_eat, time_to_sleep "
-			"and optionally number_of_times_each_philosopher_must_eat\n");
-		return (1);
-	}
-	argv++;
-	while (*argv)
-	{
-		while ((*argv)[i])
-		{
-			if ((*argv)[i] < 48 || (*argv)[i] > 57)
-				return (printf("The params must be positive integers\n"), 1);
-			i++;
-		}
-		i = 0;
-		argv++;
-	}
-	return (0);
-}
+#include <stdio.h>
 
 int	main(int argc, char **argv)
 {
+	int	number_of_philosophers;
+	int	time_to_die;
+	int	time_to_eat;
+	int	time_to_sleep;
+	int	n_times_eat;
+
 	if (check_input(argc, argv))
 		return (1);
-	//transformar a entrada em número e que sejam inteiros
+	number_of_philosophers = ft_atoi(argv[1]);
+	time_to_die = ft_atoi(argv[2]);
+	time_to_eat = ft_atoi(argv[3]);
+	time_to_sleep = ft_atoi(argv[4]);
+	n_times_eat = 0;
+	if (argv[5])
+		n_times_eat = ft_atoi(argv[5]);
+	printf("Number of philosophers: %d\n"
+		"Time to die: %d\nTime to eat: %d\nTime to sleep: %d\n"
+		"# times each philosopher must eat: %d\n", number_of_philosophers,
+		time_to_die, time_to_eat, time_to_sleep, n_times_eat);
 	return (0);
 }
