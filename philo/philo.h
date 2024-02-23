@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:34:11 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/23 16:00:52 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/23 16:15:40 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 typedef struct s_philo
 {
+	struct timeval start;
     struct timeval now;
 	struct timeval fasting;
 	int	time_to_die;
@@ -26,11 +27,11 @@ typedef struct s_philo
 	int	n_times_eat;
 }   t_philo;
 
-typedef struct s_god
-{
-	struct timeval start;
-	t_philo *philo;
-}	t_god;
+// typedef struct s_god
+// {
+// 	struct timeval start;
+// 	t_philo *philo;
+// }	t_god;
 
 int             ft_atoi(const char *str);
 int             check_input(int argc, char **argv);
