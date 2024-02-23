@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/23 11:43:33 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/23 12:53:26 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,28 @@ unsigned long	get_current_time(struct timeval start, struct timeval now)
 {
 	return ((unsigned long)(now.tv_sec * 1000 + now.tv_usec / 1000)
 		- (start.tv_sec * 1000 + start.tv_usec / 1000));
+}
+
+/*
+* Returns:
+*	1 - if the philosphy died
+*	0 - if the philosphy DOESN'T died
+*/
+int	philosopher_died(struct timeval fasting, struct timeval now, int time_to_die)
+{
+	unsigned long	time_now;
+	unsigned long	time_fasting;
+
+	time_now = now.tv_sec * 1000 + now.tv_usec / 1000;
+	time_fasting = fasting.tv_sec * 1000 + fasting.tv_usec / 1000;
+	printf("Agora: %lu, Jejum: %lu, (agora - jejum): %lu, time to die: %d\n", time_now, time_fasting, (time_now - time_fasting), time_to_die);
+
+	if ((int)(time_now - time_fasting) > time_to_die)
+		return (1);
+	return (0);
+
+	// if (((now.tv_sec * 1000 + now.tv_usec / 1000)
+	// 	- (fasting.tv_sec * 1000 + fasting.tv_usec / 1000)) < time_to_die)
+	// 	return (1);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/23 11:41:05 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/23 12:57:58 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,24 +42,34 @@ int	main(int argc, char **argv)
 		time_to_die, time_to_eat, time_to_sleep, n_times_eat);
 	
 	gettimeofday(&start, NULL);
+	gettimeofday(&fasting, NULL);
 
-	// while (tempo sem comer - tempo atual < tempo de morte)
-	// {
-		gettimeofday(&now, NULL);
-		printf("%.5lu X has taken a fork\n", get_current_time(start, now));
+	usleep(3000);//simulacao
+
+	gettimeofday(&now, NULL);
+
+	while (!philosopher_died(fasting, now, time_to_die))
+	{
+		// gettimeofday(&now, NULL);
+		// printf("%.5lu X has taken a fork\n", get_current_time(start, now));
 		
 		gettimeofday(&now, NULL);
-		printf("%.5lu X is eating\n", get_current_time(start, now));
-		usleep(time_to_eat * 1000);
-		gettimeofday(&fasting, NULL); //começa o jejum
+		if (!philosopher_died(fasting, now, time_to_die)) //philo come
+		{
+			printf("%.5lu X is eating\n", get_current_time(start, now));
+			usleep(time_to_eat * 1000);
+			gettimeofday(&fasting, NULL); //começa o jejum
+		}
+		usleep(time_to_sleep * 1000); //simulacao
+		gettimeofday(&now, NULL); //simulacao 
 		
-		gettimeofday(&now, NULL);
-		printf("%.5lu X is sleeping\n", get_current_time(start, now));
-		usleep(time_to_sleep * 1000);
+		// gettimeofday(&now, NULL);
+		// printf("%.5lu X is sleeping\n", get_current_time(start, now));
+		// usleep(time_to_sleep * 1000);
 		
-		gettimeofday(&now, NULL);
-		printf("%.5lu X is thinking\n", get_current_time(start, now));
-	// }
+		// gettimeofday(&now, NULL);
+		// printf("%.5lu X is thinking\n", get_current_time(start, now));
+	}
 
 	// gettimeofday(&now, NULL);
 	// printf("%lu X died\n", (now.tv_sec * 1000 + now.tv_usec/1000));
