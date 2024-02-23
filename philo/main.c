@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/23 16:42:36 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/23 16:56:57 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,6 @@ t_philo	*create_philo(char **argv, struct timeval start, int id)
 	philo->n_times_eat = 0;
 	if (argv[5])
 		philo->n_times_eat = ft_atoi(argv[5]);
-	
-	// if (id == 0)
-	// 	philo->time_to_die = 2;
-	
 	return (philo);
 }
 
@@ -118,16 +114,13 @@ int	main(int argc, char **argv)
 		pthread_create(&tid[i], NULL, routine, (void *)philo[i]);
 		i++;
 	}
-
-
-	
-	
-	pthread_join(tid[0], NULL);
-	pthread_join(tid[1], NULL);
-
-
-
-	
+	i = 0;
+	while (i < number_of_philosophers)
+	{
+		pthread_join(tid[i], NULL);
+		printf("Thread %d has finished execution\n", i);
+		i++;
+	}
 
 	return (0);
 }
