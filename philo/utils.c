@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/23 13:06:21 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/23 16:20:50 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ unsigned long	get_current_time(struct timeval start, struct timeval now)
 *	1 - if the philosphy died
 *	0 - if the philosphy DOESN'T died
 */
+//TODO: passar somente philo ao invés os times...
 int	philosopher_died(struct timeval fasting, struct timeval now, int time_to_die)
 {
 	unsigned long	time_now;

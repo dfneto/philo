@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/23 16:19:55 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/23 16:33:22 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 // 	return (god);
 // }
 
-t_philo	*create_philo(char **argv, struct timeval start)
+t_philo	*create_philo(char **argv, struct timeval start, int id)
 {
 	t_philo	*philo;
 
@@ -36,6 +36,7 @@ t_philo	*create_philo(char **argv, struct timeval start)
 		return (NULL);
 	gettimeofday(&philo->fasting, NULL);
 	gettimeofday(&philo->now, NULL);
+	philo->id = id;
 	philo->start = start;	
 	philo->time_to_die = ft_atoi(argv[2]);
 	philo->time_to_eat = ft_atoi(argv[3]);
@@ -60,13 +61,13 @@ void	*routine(void *philo_data)
 	philo = (t_philo *)philo_data;
 	
 	gettimeofday(&philo->now, NULL);
-	while (!philosopher_died(philo->fasting, philo->now, philo->time_to_die)) //passar philo depois
+	while (!philosopher_died(philo->fasting, philo->now, philo->time_to_die)) //TODO: refactor
 	{
 		gettimeofday(&philo->now, NULL); //talvez possa remover as condições de morte e o gettimeofday daqui
-		printf("%.5lu X has taken a fork\n", get_current_time(philo->start, philo->now));
+		printf("%.5lu %d has taken a fork\n", get_current_time(philo->start, philo->now), philo->id);
 		if (!philosopher_died(philo->fasting, philo->now, philo->time_to_die)) //come
 		{
-			printf("%.5lu X is eating\n", get_current_time(philo->start, philo->now));
+			printf("%.5lu %d is eating\n", get_current_time(philo->start, philo->now), philo->id);
 			usleep(philo->time_to_eat * 1000);
 			gettimeofday(&philo->fasting, NULL); //começa o jejum
 		}
@@ -74,43 +75,43 @@ void	*routine(void *philo_data)
 		gettimeofday(&philo->now, NULL);
 		if (!philosopher_died(philo->fasting, philo->now, philo->time_to_die)) //dorme
 		{
-			printf("%.5lu X is sleeping\n", get_current_time(philo->start, philo->now));
+			printf("%.5lu %d is sleeping\n", get_current_time(philo->start, philo->now), philo->id);
 			usleep(philo->time_to_sleep * 1000);
 		}
 		
 		gettimeofday(&philo->now, NULL);
-		printf("%.5lu X is thinking\n", get_current_time(philo->start, philo->now)); //pensa
+		printf("%.5lu %d is thinking\n", get_current_time(philo->start, philo->now), philo->id); //pensa
 	}
-	printf("%.5lu X died\n", get_current_time(philo->start, philo->now)); //morre
+	printf("%.5lu %d died\n", get_current_time(philo->start, philo->now), philo->id); //morre
 	
 	return (NULL);
 }
 
 int	main(int argc, char **argv)
 {
-	pthread_t	tid1;
-	struct timeval start;
-	int	number_of_philosophers;
-	// t_philo **philo_list;
-	t_philo	*philo = NULL;
-	// t_god	*god;
+	int				i = 0;
+	int				number_of_philosophers;
+	struct timeval 	start;
+	pthread_t		tid[2];
+	t_philo			*philo[2];
 
 	if (check_input(argc, argv))
 		return (1);
-	
 	number_of_philosophers = ft_atoi(argv[1]);
-	(void)number_of_philosophers;
-	// philo_list = (t_philo **)malloc(number_of_philosophers * sizeof(philo));
-	// philo_list[0] = philo;
-
-	// god = create_god();
 	gettimeofday(&start, NULL);
-	philo = create_philo(argv, start);
-	// god->philo = philo;
+
+	while (i < number_of_philosophers)
+	{
+		philo[i] = create_philo(argv, start, i);
+		pthread_create(&tid[i], NULL, routine, (void *)philo[i]);
+		i++;
+	}
+
+
 	
 	
-	pthread_create(&tid1, NULL, routine, (void *)philo);
-	pthread_join(tid1, NULL);
+	pthread_join(tid[0], NULL);
+	pthread_join(tid[1], NULL);
 
 
 

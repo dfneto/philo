@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:34:11 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/23 16:15:40 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/23 16:29:48 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ typedef struct s_philo
 	struct timeval start;
     struct timeval now;
 	struct timeval fasting;
+	int	id;
 	int	time_to_die;
 	int	time_to_eat;
 	int	time_to_sleep;
