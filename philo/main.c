@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/23 16:33:22 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/23 16:42:36 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ t_philo	*create_philo(char **argv, struct timeval start, int id)
 	philo->n_times_eat = 0;
 	if (argv[5])
 		philo->n_times_eat = ft_atoi(argv[5]);
+	
+	// if (id == 0)
+	// 	philo->time_to_die = 2;
+	
 	return (philo);
 }
 
@@ -92,12 +96,20 @@ int	main(int argc, char **argv)
 	int				i = 0;
 	int				number_of_philosophers;
 	struct timeval 	start;
-	pthread_t		tid[2];
-	t_philo			*philo[2];
+	pthread_t		*tid;
+	t_philo			**philo;
 
 	if (check_input(argc, argv))
 		return (1);
 	number_of_philosophers = ft_atoi(argv[1]);
+	tid = (pthread_t *)malloc(number_of_philosophers * sizeof(pthread_t));
+	if (!tid)
+		return (1);
+
+	philo = (t_philo **)malloc(number_of_philosophers * sizeof(t_philo *));
+	if (!philo)
+		return (1);
+
 	gettimeofday(&start, NULL);
 
 	while (i < number_of_philosophers)
