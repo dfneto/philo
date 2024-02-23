@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/23 12:53:26 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/23 13:06:21 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	philosopher_died(struct timeval fasting, struct timeval now, int time_to_die
 
 	time_now = now.tv_sec * 1000 + now.tv_usec / 1000;
 	time_fasting = fasting.tv_sec * 1000 + fasting.tv_usec / 1000;
-	printf("Agora: %lu, Jejum: %lu, (agora - jejum): %lu, time to die: %d\n", time_now, time_fasting, (time_now - time_fasting), time_to_die);
+	// printf("Agora: %lu, Jejum: %lu, (agora - jejum): %lu, time to die: %d\n", time_now, time_fasting, (time_now - time_fasting), time_to_die);
 
 	if ((int)(time_now - time_fasting) > time_to_die)
 		return (1);
