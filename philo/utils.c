@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/19 14:10:10 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/23 11:43:33 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,13 @@ int	check_input(int argc, char **argv)
 		argv++;
 	}
 	return (0);
+}
+
+/*
+* Returns the elapsed time since the program starts
+*/
+unsigned long	get_current_time(struct timeval start, struct timeval now)
+{
+	return ((unsigned long)(now.tv_sec * 1000 + now.tv_usec / 1000)
+		- (start.tv_sec * 1000 + start.tv_usec / 1000));
 }
