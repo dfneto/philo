@@ -6,9 +6,13 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/23 16:56:57 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/24 02:17:25 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
+//Check if one philosopher died and finish execution
+//Mutex the fork
 
 #include "philo.h"
 #include <unistd.h>
@@ -55,19 +59,21 @@ void	*routine(void *philo_data)
 
 	// usleep(3000);//simulacao para que now > fasting
 	t_philo *philo;
+	int		i = 1;
 	// t_god	*god;
 
 	// god = (t_god *)god_data;
 	philo = (t_philo *)philo_data;
 	
 	gettimeofday(&philo->now, NULL);
-	while (!philosopher_died(philo->fasting, philo->now, philo->time_to_die)) //TODO: refactor
+	while (!philosopher_died(philo->fasting, philo->now, philo->time_to_die) && i <= philo->n_times_eat) //TODO: refactor
 	{
 		gettimeofday(&philo->now, NULL); //talvez possa remover as condições de morte e o gettimeofday daqui
 		printf("%.5lu %d has taken a fork\n", get_current_time(philo->start, philo->now), philo->id);
 		if (!philosopher_died(philo->fasting, philo->now, philo->time_to_die)) //come
 		{
 			printf("%.5lu %d is eating\n", get_current_time(philo->start, philo->now), philo->id);
+			i++;
 			usleep(philo->time_to_eat * 1000);
 			gettimeofday(&philo->fasting, NULL); //começa o jejum
 		}
