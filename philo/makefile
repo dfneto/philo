@@ -6,7 +6,7 @@
 #    By: davifern <davifern@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/19 11:04:27 by davifern          #+#    #+#              #
-#    Updated: 2024/02/19 13:55:46 by davifern         ###   ########.fr        #
+#    Updated: 2024/02/26 23:45:06 by davifern         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ MAKE = make
 HEADER = philo.h
 SRC = main.c utils.c
 CC = gcc
-CFLAGS += -Wextra -Werror -Wall -g
+CFLAGS += -Wextra -Werror -Wall -g #-fsanitize=thread #Compile flags
+LDFLAGS += -fsanitize=thread
 
 # This line itself doesn't actually generate the object files; it just sets up the 
 # names that will be used when the object files are generated
@@ -37,7 +38,7 @@ all:
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJ) Makefile
-	$(CC) $(OBJ) -O3 -o $(NAME)
+	$(CC) $(OBJ) $(LDFLAGS) -O3 -o $(NAME)
 
 clean:
 	rm -f *.out *.o 
