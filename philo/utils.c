@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/27 10:38:08 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/27 11:00:45 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,14 +135,20 @@ int	philosopher_died(t_philo *philo)
 	long long		time_now;
 
 	time_now = get_time(philo->god->start);
-	// printf("Agora: %lld, Jejum: %lld, (agora - jejum): %lld, time to die: %d\n", time_now, philo->fasting, 
-	// 	(time_now - philo->fasting), philo->god->time_to_die);
 	if (time_now - philo->fasting > philo->god->time_to_die)
 		return (1);
 	return (0);
+}
 
-	// if (((now.tv_sec * 1000 + now.tv_usec / 1000)
-	// 	- (fasting.tv_sec * 1000 + fasting.tv_usec / 1000)) < time_to_die)
-	// 	return (1);
+int	all_alived(t_philo *philo)
+{
+	if(!philosopher_died(philo) && philo->god->all_alive == 1)
+		return (1);
 	return (0);
+}
+
+void	philosopher_die(t_philo *philo)
+{
+	printf("%.5lld %d died\n", get_time(philo->god->start), philo->id); //morre
+	philo->god->all_alive = 0;
 }

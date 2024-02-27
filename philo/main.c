@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/27 10:37:54 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/27 11:00:40 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ void	*routine(void *philo_data)
 	philo = (t_philo *)philo_data;
 	god = philo->god;
 	printf("philosofer #%d, all_alive: %d\n", philo->id, god->all_alive);
-	while (!philosopher_died(philo) && god->all_alive == 1)
+	while (all_alived(philo))
 	{
 		printf("%.5lld %d has taken a fork\n", get_time(god->start), philo->id);
-		if (!philosopher_died(philo) && god->all_alive == 1) //come
+		if (all_alived(philo)) //come
 		{
 			printf("%.5lld %d is eating\n", get_time(god->start), philo->id);
 			i++;
@@ -38,7 +38,7 @@ void	*routine(void *philo_data)
 			philo->fasting = get_time(god->start);//começa o jejum
 		}
 		
-		if (!philosopher_died(philo) && god->all_alive == 1) //dorme
+		if (all_alived(philo)) //dorme
 		{
 			printf("%.5lld %d is sleeping\n", get_time(god->start), philo->id);
 			usleep(god->time_to_sleep * 1000);
@@ -46,8 +46,8 @@ void	*routine(void *philo_data)
 		
 		printf("%.5lld %d is thinking\n", get_time(god->start), philo->id); //pensa
 	}
-	printf("%.5lld %d died\n", get_time(god->start), philo->id); //morre
-	god->all_alive = 0;
+	philosopher_die(philo);
+	
 	
 	return (NULL);
 }
