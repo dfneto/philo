@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:34:11 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/27 12:36:20 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/27 20:00:54 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ typedef struct s_god
 	int				time_to_sleep;
 	int				n_philo;
 	long long		start;
-	pthread_mutex_t	mutex;
+	pthread_mutex_t	mutex_all_alive;
+	pthread_mutex_t	*mutex_fork;
 	t_philo			*philo;
 }	t_god;
 

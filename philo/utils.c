@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/27 12:54:47 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/27 20:00:52 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ t_god	*create_god(char **argv)
 	god->time_to_eat = ft_atoi(argv[3]);
 	god->time_to_sleep = ft_atoi(argv[4]);
 	god->n_times_eat = 0;
-	pthread_mutex_init(&god->mutex, NULL);
+	pthread_mutex_init(&god->mutex_all_alive, NULL);
 	if (argv[5])
 		god->n_times_eat = ft_atoi(argv[5]);
 	god->philo = (t_philo *)malloc(sizeof(t_philo) * god->n_philo);
@@ -151,10 +151,10 @@ int	all_alived(t_philo *philo)
 	int	result;
 
 	result = 0;
-	pthread_mutex_lock(&philo->god->mutex);
+	pthread_mutex_lock(&philo->god->mutex_all_alive);
 	if(philo->god->all_alive == 1 && philosopher_alive(philo))
 		result = 1;
-	pthread_mutex_unlock(&philo->god->mutex);
+	pthread_mutex_unlock(&philo->god->mutex_all_alive);
 	return (result);
 }
 
