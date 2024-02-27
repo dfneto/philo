@@ -6,17 +6,17 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/27 11:00:40 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/27 12:53:52 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//TODO: Check if one philosopher died and finish execution
 //TODO: stops when all phisolophers eat enough
 //TODO: Mutex the fork
+//TODO: Check if one philosopher died and finish execution - OK
 
 #include "philo.h"
 #include <unistd.h>
-#include <pthread.h>
+
 
 void	*routine(void *philo_data)
 {
@@ -26,7 +26,6 @@ void	*routine(void *philo_data)
 
 	philo = (t_philo *)philo_data;
 	god = philo->god;
-	printf("philosofer #%d, all_alive: %d\n", philo->id, god->all_alive);
 	while (all_alived(philo))
 	{
 		printf("%.5lld %d has taken a fork\n", get_time(god->start), philo->id);
@@ -37,18 +36,14 @@ void	*routine(void *philo_data)
 			usleep(god->time_to_eat * 1000);
 			philo->fasting = get_time(god->start);//começa o jejum
 		}
-		
 		if (all_alived(philo)) //dorme
 		{
 			printf("%.5lld %d is sleeping\n", get_time(god->start), philo->id);
 			usleep(god->time_to_sleep * 1000);
 		}
-		
-		printf("%.5lld %d is thinking\n", get_time(god->start), philo->id); //pensa
+		if (all_alived(philo))
+			printf("%.5lld %d is thinking\n", get_time(god->start), philo->id); //pensa
 	}
-	philosopher_die(philo);
-	
-	
 	return (NULL);
 }
 
@@ -78,9 +73,10 @@ int	main(int argc, char **argv)
 	while (i < god->n_philo)
 	{
 		pthread_join(tid[i], NULL);
-		printf("Thread %d has finished execution\n", i);
+		// printf("Thread %d has finished execution\n", i);
 		i++;
 	}
+	pthread_mutex_destroy(&god->mutex);
 	return (0);
 }
 	// printf("Number of philosophers: %d\n"

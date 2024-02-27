@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/27 11:00:45 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/27 12:54:47 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ t_god	*create_god(char **argv)
 	god->time_to_eat = ft_atoi(argv[3]);
 	god->time_to_sleep = ft_atoi(argv[4]);
 	god->n_times_eat = 0;
+	pthread_mutex_init(&god->mutex, NULL);
 	if (argv[5])
 		god->n_times_eat = ft_atoi(argv[5]);
 	god->philo = (t_philo *)malloc(sizeof(t_philo) * god->n_philo);
@@ -127,28 +128,38 @@ long long get_time_diff(long long start, long long now)
 
 /*
 * Returns:
-*	1 - if the philosphy died
-*	0 - if the philosphy DOESN'T died
+*	1 - if the philosphy is alive
+*	0 - if the philosphy is died
 */
-int	philosopher_died(t_philo *philo)
+int	philosopher_alive(t_philo *philo)
 {
 	long long		time_now;
 
 	time_now = get_time(philo->god->start);
+	if (philo->god->all_alive == 0)
+		return (0);
 	if (time_now - philo->fasting > philo->god->time_to_die)
-		return (1);
-	return (0);
+	{
+		philosopher_die(philo);
+		return (0);
+	}
+	return (1);
 }
 
 int	all_alived(t_philo *philo)
 {
-	if(!philosopher_died(philo) && philo->god->all_alive == 1)
-		return (1);
-	return (0);
+	int	result;
+
+	result = 0;
+	pthread_mutex_lock(&philo->god->mutex);
+	if(philo->god->all_alive == 1 && philosopher_alive(philo))
+		result = 1;
+	pthread_mutex_unlock(&philo->god->mutex);
+	return (result);
 }
 
 void	philosopher_die(t_philo *philo)
 {
-	printf("%.5lld %d died\n", get_time(philo->god->start), philo->id); //morre
+	printf("\033[31m%.5lld %d died\033[0m\n", get_time(philo->god->start), philo->id); //morre
 	philo->god->all_alive = 0;
 }

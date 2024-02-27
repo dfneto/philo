@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:34:11 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/27 11:00:49 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/27 12:36:20 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 # define PHILO_H
 
 # include <stdio.h>
-#include <stdlib.h>
+# include <stdlib.h>
 # include <sys/time.h>
+# include <pthread.h>
 
 typedef struct s_god t_god;
 typedef struct s_philo
@@ -34,12 +35,13 @@ typedef struct s_god
 	int				time_to_sleep;
 	int				n_philo;
 	long long		start;
+	pthread_mutex_t	mutex;
 	t_philo			*philo;
 }	t_god;
 
 int             ft_atoi(const char *str);
 int             check_input(int argc, char **argv);
-int             philosopher_died(t_philo *philo);
+int             philosopher_alive(t_philo *philo);
 int				all_alived(t_philo *philo);
 long long		get_time(long long start);
 long long		get_start_time(void);
