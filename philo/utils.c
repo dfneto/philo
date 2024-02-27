@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/27 00:23:26 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/27 10:38:08 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,21 @@ long long	get_time(long long start)
 
 	gettimeofday(&now, NULL);
 	time_now = now.tv_sec * 1000 + now.tv_usec / 1000;
-	printf("Start time: %lld, Now: %lld, time_now - start: %lld\n", start, time_now, (time_now - start));
+	// printf("Start time: %lld, Now: %lld, time_now - start: %lld\n", start, time_now, (time_now - start));
 	return (time_now - start);
 }
+
+long long	get_start_time(void)
+{
+	long long		time_now;
+	struct timeval	now;
+
+	gettimeofday(&now, NULL);
+	time_now = now.tv_sec * 1000 + now.tv_usec / 1000;
+	// printf("Start time: %lld\n", time_now);
+	return (time_now);
+}
+
 long long get_time_diff(long long start, long long now)
 {
 	return (now - start);
@@ -123,10 +135,9 @@ int	philosopher_died(t_philo *philo)
 	long long		time_now;
 
 	time_now = get_time(philo->god->start);
-	printf("Agora: %lld, Jejum: %lld, (agora - jejum): %lld, time to die: %d\n", time_now, philo->fasting, 
-		(time_now - philo->fasting), philo->god->time_to_die);
-
-	if ((int)(time_now - philo->fasting) > philo->god->time_to_die)
+	// printf("Agora: %lld, Jejum: %lld, (agora - jejum): %lld, time to die: %d\n", time_now, philo->fasting, 
+	// 	(time_now - philo->fasting), philo->god->time_to_die);
+	if (time_now - philo->fasting > philo->god->time_to_die)
 		return (1);
 	return (0);
 

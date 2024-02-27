@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/27 00:22:49 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/27 10:37:54 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ void	*routine(void *philo_data)
 	philo = (t_philo *)philo_data;
 	god = philo->god;
 	printf("philosofer #%d, all_alive: %d\n", philo->id, god->all_alive);
-	if (philo->id == 0)
-		god->all_alive = 9;
 	while (!philosopher_died(philo) && god->all_alive == 1)
 	{
 		printf("%.5lld %d has taken a fork\n", get_time(god->start), philo->id);

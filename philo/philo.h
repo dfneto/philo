@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:34:11 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/27 00:23:22 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/27 10:41:11 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,11 @@ typedef struct s_god
 
 int             ft_atoi(const char *str);
 int             check_input(int argc, char **argv);
-unsigned long	get_current_time(struct timeval start, struct timeval now);
 int             philosopher_died(t_philo *philo);
 long long		get_time(long long start);
-// long long		get_time(void);
-long long		get_time_diff(long long start, long long now);
+long long		get_start_time(void);
 t_god			*create_god(char **argv);
+// unsigned long	get_current_time(struct timeval start, struct timeval now);
+// long long		get_time(void);
+// long long		get_time_diff(long long start, long long now);
 #endif
