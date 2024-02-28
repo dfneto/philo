@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/28 12:41:09 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/28 21:11:46 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ int	all_alived(t_philo *philo)
 	int	result;
 
 	result = 0;
-	pthread_mutex_lock(&philo->god->mutex_all_alive);
+	pthread_mutex_lock(&philo->god->mutex_all_alive); //TODO: não sei se estou usando o mutex corretamente aqui. Refletir. Sei que funciona, mas não faz sentido pra mim trancar um código de leitura porque não estou alterando o valor do all_alive. Mas talvez sim eu esteja alterando o valor de all_alive no philosopher_die
 	if(philo->god->all_alive == 1 && philosopher_alive(philo))
 		result = 1;
 	pthread_mutex_unlock(&philo->god->mutex_all_alive);

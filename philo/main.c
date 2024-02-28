@@ -6,13 +6,16 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/28 19:18:02 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/28 21:11:21 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //TODO: Mutex the fork. O garfo tá disponível? Pego e seguro até o outro estar disponível.
 //TODO: Soltar o garfo quando um deles não está disponível
 //TODO: stops when all phisolophers eat enough
+//TODO: criar uma thread (outra rotina com mesmo god) que observa se os filósofos estão vivos e se um morreu imprime que ela morreu pq pense no exe: 2 filósofos
+// que levam 300ms para comer e 200ms para morrer. Quando o primeiro come o segundo vai morrer em 200ms contudo como ele que vai printar
+// sua morte, vai printar em 300 e não 200. make && ./philo 2 100 300 100
 //TODO: um filósofo pode morrer enquanto come?
 //TODO: da ultima vez que comeu até a morte tem que passar tiempo de muerto (+tempo de comer) + 10s
 //TODO: testar com 0, 1, 5, 10 e 200
@@ -28,6 +31,14 @@ becomes available. This means that the thread attempting to acquire the lock
 will be suspended and placed in a wait state until the thread that currently 
 holds the lock releases it. */
 
+int	define_left_fork(t_philo *philo)
+{
+	if (philo->id == 0)
+		return (philo->god->n_philo - 1);
+	else
+		return (philo->id - 1);
+}
+
 void	*routine(void *philo_data)
 {
 	t_philo *philo;
@@ -40,39 +51,29 @@ void	*routine(void *philo_data)
 	god = philo->god;
 	
 	//TODO: pensar en una forma mejor de tratar la concurrencia. Sin esto todos los philosophers cojen 1 tenedor y nadie come
-	if (philo->id % 2 == 1 || philo->id == god->n_philo - 1)
-		usleep(1000);
+	// if (philo->id % 2 == 1 || philo->id == god->n_philo - 1)
+	// 	usleep(1000);
 	
 	while (all_alived(philo))
 	{
-		pthread_mutex_lock(&god->mutex_fork[philo->id]); // pega (lock) o garfo DIREITO fork[i] quando não estiver bloqueado
+		pthread_mutex_lock(&god->mutex_fork[philo->id]); // pega (lock) o garfo DIREITO quando não estiver bloqueado
 		if (all_alived(philo)) 
 			printf("%.5lld %d has taken a fork %d\n", get_time(god->start), philo->id, philo->id);
-		if (philo->id == 0)
-			left = god->n_philo - 1;
-		else
-			left = philo->id - 1;
-		pthread_mutex_lock(&god->mutex_fork[left]); // pega (lock) o garfo ESQUERDO fork[i] quando não estiver bloqueado
+		left = define_left_fork(philo);
+		pthread_mutex_lock(&god->mutex_fork[left]); // pega (lock) o garfo ESQUERDO quando não estiver bloqueado
 		if (all_alived(philo))
 			printf("%.5lld %d has taken a fork %d\n", get_time(god->start), philo->id, left);
-		printf("Philo #%d times eaten: %d, n times to eat: %d\n", philo->id, times_eaten, god->n_times_eat);
-		// if (all_alived(philo) && (times_eaten < god->n_times_eat)) //EAT
 		if (all_alived(philo)) //EAT
 		{
 			printf("%.5lld %d is eating\n", get_time(god->start), philo->id);
 			times_eaten++;
 			usleep(god->time_to_eat * 1000);
-			pthread_mutex_unlock(&god->mutex_fork[philo->id]); //unlock RIGHT fork
-			printf("Unlock fork %d\n", philo->id);
-			pthread_mutex_unlock(&god->mutex_fork[left]); // unlock LEFT fork
-			printf("Unlock fork %d\n", left);
 			philo->fasting = get_time(god->start); //FASTING STARTS
 		}
-		// else if (times_eaten == god->n_times_eat)
-		// {
-		// 	printf("Times eaten achieved!\n");
-		// 	a = 0 ;
-		// }
+		pthread_mutex_unlock(&god->mutex_fork[philo->id]); //unlock RIGHT fork
+		printf("philo %d Unlock fork %d\n", philo->id, philo->id);
+		pthread_mutex_unlock(&god->mutex_fork[left]); // unlock LEFT fork
+		printf("philo %d Unlock fork %d\n", philo->id, left);
 		if (all_alived(philo)) //SLEEP
 		{
 			printf("%.5lld %d is sleeping\n", get_time(god->start), philo->id);
@@ -81,6 +82,7 @@ void	*routine(void *philo_data)
 		if (all_alived(philo))
 			printf("%.5lld %d is thinking\n", get_time(god->start), philo->id); //THINK
 	}
+	printf("Filósofo #%d ha parado su ejecución\n", philo->id);
 	return (NULL);
 }
 
@@ -115,12 +117,12 @@ int	main(int argc, char **argv)
 		printf("Thread %d has finished execution\n", i);
 		i++;
 	}
-	printf("Crash\n");
-	pthread_mutex_destroy(&god->mutex_all_alive);
-	i = 0;
-	while (i < god->n_philo)
-		pthread_mutex_destroy(&god->mutex_fork[i++]);
-	free(god->mutex_fork);
+	printf("passou\n");
+	// pthread_mutex_destroy(&god->mutex_all_alive);
+	// i = 0;
+	// while (i < god->n_philo)
+	// 	pthread_mutex_destroy(&god->mutex_fork[i++]);
+	// free(god->mutex_fork);
 	//TODO: free do tid e god e dos philos, mas antes rodar o leaks atExit
 	return (0);
 }
