@@ -6,7 +6,7 @@
 #    By: davifern <davifern@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/19 11:04:27 by davifern          #+#    #+#              #
-#    Updated: 2024/02/26 23:45:06 by davifern         ###   ########.fr        #
+#    Updated: 2024/02/28 12:35:31 by davifern         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,8 @@ all:
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJ) Makefile
-	$(CC) $(OBJ) $(LDFLAGS) -O3 -o $(NAME)
+	$(CC) $(OBJ) -O3 -o $(NAME)
+# $(CC) $(OBJ) $(LDFLAGS) -O3 -o $(NAME)
 
 clean:
 	rm -f *.out *.o 

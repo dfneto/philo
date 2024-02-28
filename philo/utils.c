@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/27 20:00:52 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/28 12:41:09 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,13 @@ int	check_input(int argc, char **argv)
 	return (0);
 }
 
+//TODO: handle mutex init error
 t_god	*create_god(char **argv)
 {
 	t_god	*god;
-	
+	int		i;
+
+	i = 0;
 	god = (t_god *)malloc(sizeof(t_god));
 	if (!god)
 		return (NULL);
@@ -70,9 +73,19 @@ t_god	*create_god(char **argv)
 	god->time_to_eat = ft_atoi(argv[3]);
 	god->time_to_sleep = ft_atoi(argv[4]);
 	god->n_times_eat = 0;
-	pthread_mutex_init(&god->mutex_all_alive, NULL);
 	if (argv[5])
 		god->n_times_eat = ft_atoi(argv[5]);
+
+	pthread_mutex_init(&god->mutex_all_alive, NULL);
+
+	god->mutex_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * god->n_philo);
+	if (!god->mutex_fork)
+		return (NULL);
+	while (i < god->n_philo)
+	{
+		pthread_mutex_init(&god->mutex_fork[i], NULL);
+		i++;
+	}
 	god->philo = (t_philo *)malloc(sizeof(t_philo) * god->n_philo);
 	if (!god->philo)
 		return (NULL);
