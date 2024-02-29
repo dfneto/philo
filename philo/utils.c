@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/28 21:11:46 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/29 12:43:36 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,10 @@ t_god	*create_god(char **argv)
 	god->time_to_die = ft_atoi(argv[2]);
 	god->time_to_eat = ft_atoi(argv[3]);
 	god->time_to_sleep = ft_atoi(argv[4]);
-	god->n_times_eat = 0;
+	god->n_times_eat = -1;
 	if (argv[5])
 		god->n_times_eat = ft_atoi(argv[5]);
-
 	pthread_mutex_init(&god->mutex_all_alive, NULL);
-
 	god->mutex_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * god->n_philo);
 	if (!god->mutex_fork)
 		return (NULL);
@@ -90,15 +88,6 @@ t_god	*create_god(char **argv)
 	if (!god->philo)
 		return (NULL);
 	return (god);
-}
-
-/*
-* Returns the elapsed time since the program starts
-*/
-unsigned long	get_current_time(struct timeval start, struct timeval now)
-{
-	return ((unsigned long)(now.tv_sec * 1000 + now.tv_usec / 1000)
-		- (start.tv_sec * 1000 + start.tv_usec / 1000));
 }
 
 /*
@@ -126,19 +115,6 @@ long long	get_start_time(void)
 	return (time_now);
 }
 
-long long get_time_diff(long long start, long long now)
-{
-	return (now - start);
-}
-
-// long long	get_time(void)
-// {
-// 	struct timeval	now;
-
-// 	gettimeofday(&now, NULL);
-// 	return (now.tv_sec * 1000 + now.tv_usec / 1000);
-// }
-
 /*
 * Returns:
 *	1 - if the philosphy is alive
@@ -159,12 +135,18 @@ int	philosopher_alive(t_philo *philo)
 	return (1);
 }
 
+/*
+* Tiene que ser un filósofo a la vez el que compruebe si todos están vivos,
+* porque de lo contrario, mientras uno comprueba si todos están vivos, otro 
+* filósofo puede morir y cambiar el estado all_alive.
+* El primero en llegar pthread_mutex_lock comprobará si murió, mientras los demás esperan. 
+*/
 int	all_alived(t_philo *philo)
 {
 	int	result;
 
 	result = 0;
-	pthread_mutex_lock(&philo->god->mutex_all_alive); //TODO: não sei se estou usando o mutex corretamente aqui. Refletir. Sei que funciona, mas não faz sentido pra mim trancar um código de leitura porque não estou alterando o valor do all_alive. Mas talvez sim eu esteja alterando o valor de all_alive no philosopher_die
+	pthread_mutex_lock(&philo->god->mutex_all_alive); 
 	if(philo->god->all_alive == 1 && philosopher_alive(philo))
 		result = 1;
 	pthread_mutex_unlock(&philo->god->mutex_all_alive);
@@ -175,4 +157,14 @@ void	philosopher_die(t_philo *philo)
 {
 	printf("\033[31m%.5lld %d died\033[0m\n", get_time(philo->god->start), philo->id); //morre
 	philo->god->all_alive = 0;
+}
+/*
+* Los filósofos impares y el último duermen por 1s. 
+* Esta función es para tratar la concurrencia. Sin ella todos los 
+* filósofos cogen un tenedor y nadie come. 
+*/
+void	set_philo_to_start(t_philo *philo)
+{
+	if (philo->id % 2 == 1 || philo->id == philo->god->n_philo - 1)
+		usleep(1000);
 }

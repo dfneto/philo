@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:34:11 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/27 20:00:54 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/29 11:15:58 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@
 # include <stdlib.h>
 # include <sys/time.h>
 # include <pthread.h>
+# include <unistd.h>
 
 typedef struct s_god t_god;
 typedef struct s_philo
 {
 	int				id;
+	int				times_eaten;
 	long long		fasting;
 	t_god			*god;
 }   t_philo;
@@ -47,6 +49,7 @@ int				all_alived(t_philo *philo);
 long long		get_time(long long start);
 long long		get_start_time(void);
 t_god			*create_god(char **argv);
+void		 	set_philo_to_start(t_philo *philo);
 void			philosopher_die(t_philo *philo);
 // unsigned long	get_current_time(struct timeval start, struct timeval now);
 // long long		get_time(void);

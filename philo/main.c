@@ -6,24 +6,24 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/28 21:11:21 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/29 12:41:43 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//TODO: Mutex the fork. O garfo tá disponível? Pego e seguro até o outro estar disponível.
-//TODO: Soltar o garfo quando um deles não está disponível
-//TODO: stops when all phisolophers eat enough
 //TODO: criar uma thread (outra rotina com mesmo god) que observa se os filósofos estão vivos e se um morreu imprime que ela morreu pq pense no exe: 2 filósofos
 // que levam 300ms para comer e 200ms para morrer. Quando o primeiro come o segundo vai morrer em 200ms contudo como ele que vai printar
 // sua morte, vai printar em 300 e não 200. make && ./philo 2 100 300 100
-//TODO: um filósofo pode morrer enquanto come?
 //TODO: da ultima vez que comeu até a morte tem que passar tiempo de muerto (+tempo de comer) + 10s
-//TODO: testar com 0, 1, 5, 10 e 200
+//TODO: stops when all phisolophers eat enough
+
+//TODO: testar com 0, 1, 5, 10 e 200 filósofos. Testar com diferentes tempos e com -1, 0, n times_to_eat
 //TODO: testar data race
 //TODO: Check if one philosopher died and finish execution - OK
+//TODO: Mutex the fork. O garfo tá disponível? Pego e seguro até o outro estar disponível. - OK
+//TODO: Soltar o garfo quando um deles não está disponível - No voy a hacer
 
 #include "philo.h"
-#include <unistd.h>
+
 
 /* pthread_mutex_lock(&god->mutex_fork[i]) : if the mutex is already locked by 
 a different thread, the calling thread will block (i.e., wait) until the mutex 
@@ -43,17 +43,12 @@ void	*routine(void *philo_data)
 {
 	t_philo *philo;
 	t_god	*god;
-	int		times_eaten = 0;
 	int		left = 0;
 	// int		a = 1;
 
 	philo = (t_philo *)philo_data;
 	god = philo->god;
-	
-	//TODO: pensar en una forma mejor de tratar la concurrencia. Sin esto todos los philosophers cojen 1 tenedor y nadie come
-	// if (philo->id % 2 == 1 || philo->id == god->n_philo - 1)
-	// 	usleep(1000);
-	
+	set_philo_to_start(philo);
 	while (all_alived(philo))
 	{
 		pthread_mutex_lock(&god->mutex_fork[philo->id]); // pega (lock) o garfo DIREITO quando não estiver bloqueado
@@ -66,14 +61,14 @@ void	*routine(void *philo_data)
 		if (all_alived(philo)) //EAT
 		{
 			printf("%.5lld %d is eating\n", get_time(god->start), philo->id);
-			times_eaten++;
+			philo->times_eaten++;
 			usleep(god->time_to_eat * 1000);
 			philo->fasting = get_time(god->start); //FASTING STARTS
 		}
 		pthread_mutex_unlock(&god->mutex_fork[philo->id]); //unlock RIGHT fork
-		printf("philo %d Unlock fork %d\n", philo->id, philo->id);
+		printf("philo %d Unlock right fork %d\n", philo->id, philo->id);
 		pthread_mutex_unlock(&god->mutex_fork[left]); // unlock LEFT fork
-		printf("philo %d Unlock fork %d\n", philo->id, left);
+		printf("philo %d Unlock left fork %d\n", philo->id, left);
 		if (all_alived(philo)) //SLEEP
 		{
 			printf("%.5lld %d is sleeping\n", get_time(god->start), philo->id);
@@ -103,14 +98,17 @@ int	main(int argc, char **argv)
 	while (i < god->n_philo)
 	{
 		god->philo[i].id = i;
+		god->philo[i].times_eaten = 0;
 		god->philo[i].god = god;
 		god->philo[i].fasting = get_time(god->start);
 		pthread_create(&tid[i], NULL, routine, &god->philo[i]); //começa a thread
 		i++;
 	}
-	i = 0;
-	//TODO: solamente hacer el join despues que todos comieron o uno si morrió
 	
+	//TODO: solamente hacer el join despues que todos comieron o uno si morrió
+	i = 0;
+	
+
 	while (i < god->n_philo)
 	{
 		pthread_join(tid[i], NULL);		//espera pela thread
