@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/29 16:14:49 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/29 20:03:47 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ t_god	*create_god(char **argv)
 	if (argv[5])
 		god->n_times_eat = ft_atoi(argv[5]);
 	pthread_mutex_init(&god->mutex_all_alive, NULL);
+	pthread_mutex_init(&god->mutex_fasting, NULL);
 	god->mutex_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * god->n_philo);
 	if (!god->mutex_fork)
 		return (NULL);
@@ -141,17 +142,33 @@ int	philosopher_alive(t_philo *philo)
 int	philosopher_died(t_philo *philo)
 {
 	long long		time_now;
+	int				ret;
 
+	ret = 0;
 	time_now = get_time(philo->god->start);
 	// if (philo->god->all_alive == 0)
 	// 	return (0);
+	pthread_mutex_lock(&philo->god->mutex_fasting);
 	if (time_now - philo->fasting > philo->god->time_to_die)
 	{
 		printf("\033[31m%.5lld %d died\033[0m\n", get_time(philo->god->start), philo->id); //morre
-		return (1);
+		ret = 1;
 	}
-	return (0);
+	pthread_mutex_unlock(&philo->god->mutex_fasting);
+	return (ret);
 	
+}
+
+int	all_alive(t_god *god)
+{
+	int	ret;
+
+	ret = 0;
+	pthread_mutex_lock(&god->mutex_all_alive);
+	if (god->all_alive)
+		ret = 1;
+	pthread_mutex_unlock(&god->mutex_all_alive);
+	return (ret);
 }
 
 /*

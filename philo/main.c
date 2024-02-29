@@ -6,13 +6,14 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/29 16:16:08 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/29 20:21:12 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//DOING: talvez deva implementar mutex em all_alive. Não entendo como aparentemente funciona. Talvez tenha um data race aí. Checar com fsanitize.
-//TODO: stops when all phisolophers eat enough
+//TODO: ver o caso make && ./philo 10 310 150 100
+//TODO: ver porque nesse caso ./philo 5 410 200 200 sempre o zero morre primeiro
 //TODO: criar exit_error function e limitar números de até 9 dígitos
+//TODO: stops when all phisolophers eat enough
 //TODO: testar com 0, 1, 5, 10 e 200 filósofos. Testar com diferentes tempos e com -1, 0, n em times_to_eat. Usar algum tester tbm
 //TODO: testar data race
 //DONE: Check if one philosopher died and finish execution
@@ -22,6 +23,8 @@
 // que levam 300ms para comer e 200ms para morrer. Quando o primeiro come o segundo vai morrer em 200ms contudo como ele que vai printar
 // sua morte, vai printar em 300 e não 200. make && ./philo 2 100 300 100. Isso acontece porque enquanto o 1 está comendo (com os dois garfos) o 2 está espereando sua
 // vez no pthread_mutex_lock. Quando o 1 libera os garfos, 2 bloqueia o garfo e vai verificar se morreu. - OK
+//DONE: talvez deva implementar mutex em all_alive. Não entendo como aparentemente funciona. Talvez tenha um data race aí. Checar com fsanitize. -> Sim,
+// havia um data race nesse ponto porque ao mesmo tempo que um filósofo queria saber se todos estavam vivos, o observador estava alterando esse valor
 
 #include "philo.h"
 
@@ -49,19 +52,21 @@ void	*routine(void *philo_data)
 	philo = (t_philo *)philo_data;
 	god = philo->god;
 	set_philo_to_start(philo);
-	while (philo->god->all_alive)
+	while (all_alive(god))
 	{
 		pthread_mutex_lock(&god->mutex_fork[philo->id]); // pega (lock) o garfo DIREITO quando não estiver bloqueado
-		if (philo->god->all_alive) 
+		if (all_alive(god)) 
 			printf("%.5lld %d has taken a fork %d\n", get_time(god->start), philo->id, philo->id);
 		left = define_left_fork(philo);
 		pthread_mutex_lock(&god->mutex_fork[left]); // pega (lock) o garfo ESQUERDO quando não estiver bloqueado
-		if (philo->god->all_alive)
+		if (all_alive(god))
 			printf("%.5lld %d has taken a fork %d\n", get_time(god->start), philo->id, left);
-		if (philo->god->all_alive) //EAT
+		if (all_alive(god)) //EAT
 		{
 			printf("%.5lld %d is eating\n", get_time(god->start), philo->id);
+			pthread_mutex_lock(&god->mutex_fasting);
 			philo->fasting = get_time(god->start); //FASTING STARTS
+			pthread_mutex_unlock(&god->mutex_fasting);
 			philo->times_eaten++;
 			usleep(god->time_to_eat * 1000);
 		}
@@ -69,12 +74,12 @@ void	*routine(void *philo_data)
 		// printf("philo %d Unlock right fork %d\n", philo->id, philo->id);
 		pthread_mutex_unlock(&god->mutex_fork[left]); // unlock LEFT fork
 		// printf("philo %d Unlock left fork %d\n", philo->id, left);
-		if (philo->god->all_alive) //SLEEP
+		if (all_alive(god)) //SLEEP
 		{
 			printf("%.5lld %d is sleeping\n", get_time(god->start), philo->id);
 			usleep(god->time_to_sleep * 1000);
 		}
-		if (philo->god->all_alive)
+		if (all_alive(god))
 			printf("%.5lld %d is thinking\n", get_time(god->start), philo->id); //THINK
 	}
 	// printf("Filósofo #%d ha parado su ejecución\n", philo->id);
@@ -107,13 +112,15 @@ int	main(int argc, char **argv)
 	
 	//The observer
 	i = 0;
-	while (god->all_alive)
+	while (all_alive(god))
 	{
 		while (i < god->n_philo) //para cada filo
 		{
 			if (philosopher_died(&god->philo[i]))	//checar se está vivo
 			{
+				pthread_mutex_lock(&god->mutex_all_alive);
 				god->all_alive = 0; //setar all_alive = 0
+				pthread_mutex_unlock(&god->mutex_all_alive);
 				break ;
 			}
 			i++;
