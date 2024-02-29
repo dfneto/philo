@@ -6,14 +6,13 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/29 12:43:36 by davifern         ###   ########.fr       */
+/*   Updated: 2024/02/29 16:14:49 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 /* A simplified version of atoi*/
-//TODO: if (result > 2147483647)?
 int	ft_atoi(const char *str)
 {
 	int		i;
@@ -134,6 +133,26 @@ int	philosopher_alive(t_philo *philo)
 	}
 	return (1);
 }
+/*
+* Returns:
+*	1 - if the philospher died
+*	0 - if the philospher did not die
+*/
+int	philosopher_died(t_philo *philo)
+{
+	long long		time_now;
+
+	time_now = get_time(philo->god->start);
+	// if (philo->god->all_alive == 0)
+	// 	return (0);
+	if (time_now - philo->fasting > philo->god->time_to_die)
+	{
+		printf("\033[31m%.5lld %d died\033[0m\n", get_time(philo->god->start), philo->id); //morre
+		return (1);
+	}
+	return (0);
+	
+}
 
 /*
 * Tiene que ser un filósofo a la vez el que compruebe si todos están vivos,
@@ -152,6 +171,7 @@ int	all_alived(t_philo *philo)
 	pthread_mutex_unlock(&philo->god->mutex_all_alive);
 	return (result);
 }
+
 
 void	philosopher_die(t_philo *philo)
 {
