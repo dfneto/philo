@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:34:11 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/01 15:11:08 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/01 15:35:22 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,10 @@ typedef enum
 void			print(t_philo *philo, int status);
 int             ft_atoi(const char *str);
 int             check_input(int argc, char **argv);
-int             philosopher_alive(t_philo *philo);
 int				philosopher_died(t_philo *philo);
-int				all_alived(t_philo *philo);
 int				all_alive(t_god *god);
 long long		get_time(long long start);
 long long		get_start_time(void);
 t_god			*create_god(char **argv);
 void		 	set_philo_to_start(t_philo *philo);
-void			philosopher_die(t_philo *philo);
 #endif
