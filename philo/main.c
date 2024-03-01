@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/29 20:21:12 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/01 15:25:07 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,20 @@ void	*routine(void *philo_data)
 	{
 		pthread_mutex_lock(&god->mutex_fork[philo->id]); // pega (lock) o garfo DIREITO quando não estiver bloqueado
 		if (all_alive(god)) 
-			printf("%.5lld %d has taken a fork %d\n", get_time(god->start), philo->id, philo->id);
+			print(philo, FORK);
+			// printf("%.5lld %d has taken a fork\n", get_time(god->start), philo->id);
 		left = define_left_fork(philo);
 		pthread_mutex_lock(&god->mutex_fork[left]); // pega (lock) o garfo ESQUERDO quando não estiver bloqueado
 		if (all_alive(god))
-			printf("%.5lld %d has taken a fork %d\n", get_time(god->start), philo->id, left);
+			print(philo, FORK);
+			//printf("%.5lld %d has taken a fork\n", get_time(god->start), philo->id);
 		if (all_alive(god)) //EAT
 		{
-			printf("%.5lld %d is eating\n", get_time(god->start), philo->id);
-			pthread_mutex_lock(&god->mutex_fasting);
+			// printf("%.5lld %d is eating\n", get_time(god->start), philo->id);
+			print(philo, EAT);
+			pthread_mutex_lock(&philo->m_fasting);
 			philo->fasting = get_time(god->start); //FASTING STARTS
-			pthread_mutex_unlock(&god->mutex_fasting);
+			pthread_mutex_unlock(&philo->m_fasting);
 			philo->times_eaten++;
 			usleep(god->time_to_eat * 1000);
 		}
@@ -76,13 +79,14 @@ void	*routine(void *philo_data)
 		// printf("philo %d Unlock left fork %d\n", philo->id, left);
 		if (all_alive(god)) //SLEEP
 		{
-			printf("%.5lld %d is sleeping\n", get_time(god->start), philo->id);
+			// printf("%.5lld %d is sleeping\n", get_time(god->start), philo->id);
+			print(philo, SLEEP);
 			usleep(god->time_to_sleep * 1000);
 		}
 		if (all_alive(god))
-			printf("%.5lld %d is thinking\n", get_time(god->start), philo->id); //THINK
+			print(philo, THINK);
+			// printf("%.5lld %d is thinking\n", get_time(god->start), philo->id); //THINK
 	}
-	// printf("Filósofo #%d ha parado su ejecución\n", philo->id);
 	return (NULL);
 }
 
@@ -106,6 +110,7 @@ int	main(int argc, char **argv)
 		god->philo[i].times_eaten = 0;
 		god->philo[i].god = god;
 		god->philo[i].fasting = get_time(god->start);
+		pthread_mutex_init(&god->philo[i].m_fasting, NULL);
 		pthread_create(&tid[i], NULL, routine, &god->philo[i]); //começa a thread
 		i++;
 	}
@@ -114,17 +119,17 @@ int	main(int argc, char **argv)
 	i = 0;
 	while (all_alive(god))
 	{
-		while (i < god->n_philo) //para cada filo
-		{
-			if (philosopher_died(&god->philo[i]))	//checar se está vivo
-			{
 				pthread_mutex_lock(&god->mutex_all_alive);
-				god->all_alive = 0; //setar all_alive = 0
-				pthread_mutex_unlock(&god->mutex_all_alive);
+		while (i < god->n_philo)
+		{
+			if (philosopher_died(&god->philo[i]))
+			{
+				god->all_alive = 0;
 				break ;
 			}
 			i++;
 		}
+				pthread_mutex_unlock(&god->mutex_all_alive);
 		i = 0;
 	}
 	

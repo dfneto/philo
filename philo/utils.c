@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/02/29 20:03:47 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/01 15:23:20 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ t_god	*create_god(char **argv)
 	if (argv[5])
 		god->n_times_eat = ft_atoi(argv[5]);
 	pthread_mutex_init(&god->mutex_all_alive, NULL);
-	pthread_mutex_init(&god->mutex_fasting, NULL);
+	pthread_mutex_init(&god->m_print, NULL);
 	god->mutex_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * god->n_philo);
 	if (!god->mutex_fork)
 		return (NULL);
@@ -139,7 +139,7 @@ int	philosopher_alive(t_philo *philo)
 *	1 - if the philospher died
 *	0 - if the philospher did not die
 */
-int	philosopher_died(t_philo *philo)
+int		philosopher_died(t_philo *philo)
 {
 	long long		time_now;
 	int				ret;
@@ -148,13 +148,14 @@ int	philosopher_died(t_philo *philo)
 	time_now = get_time(philo->god->start);
 	// if (philo->god->all_alive == 0)
 	// 	return (0);
-	pthread_mutex_lock(&philo->god->mutex_fasting);
+	pthread_mutex_lock(&philo->m_fasting); // acho que faz mais sentido ter um mutex_fasting por filósofo, mas um geral em god tbm funciona
 	if (time_now - philo->fasting > philo->god->time_to_die)
 	{
-		printf("\033[31m%.5lld %d died\033[0m\n", get_time(philo->god->start), philo->id); //morre
+		print(philo, DIE);
+		// printf("\033[31m%.5lld %d died\033[0m\n", get_time(philo->god->start), philo->id); //morre
 		ret = 1;
 	}
-	pthread_mutex_unlock(&philo->god->mutex_fasting);
+	pthread_mutex_unlock(&philo->m_fasting);
 	return (ret);
 	
 }
@@ -189,10 +190,26 @@ int	all_alived(t_philo *philo)
 	return (result);
 }
 
+void	print(t_philo *philo, int status)
+{
+	pthread_mutex_lock(&philo->god->m_print);
+	if (status == FORK)
+		printf("%.5lld %d has taken a fork\n", get_time(philo->god->start), philo->id);
+	if (status == EAT)
+		printf("%.5lld %d is eating\n", get_time(philo->god->start), philo->id);
+	if (status == SLEEP)
+		printf("%.5lld %d is sleeping\n", get_time(philo->god->start), philo->id);
+	if (status == THINK)
+		printf("%.5lld %d is thinkings\n", get_time(philo->god->start), philo->id);
+	if (status == DIE)
+		printf("\033[31m%.5lld %d died\033[0m\n", get_time(philo->god->start), philo->id);
+	pthread_mutex_unlock(&philo->god->m_print);
+}
 
 void	philosopher_die(t_philo *philo)
 {
-	printf("\033[31m%.5lld %d died\033[0m\n", get_time(philo->god->start), philo->id); //morre
+	// printf("\033[31m%.5lld %d died\033[0m\n", get_time(philo->god->start), philo->id); //morre
+	print(philo, DIE);
 	philo->god->all_alive = 0;
 }
 /*

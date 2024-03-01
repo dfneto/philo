@@ -6,7 +6,7 @@
 #    By: davifern <davifern@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/19 11:04:27 by davifern          #+#    #+#              #
-#    Updated: 2024/02/29 16:15:22 by davifern         ###   ########.fr        #
+#    Updated: 2024/03/01 15:07:15 by davifern         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ MAKE = make
 HEADER = philo.h
 SRC = main.c utils.c
 CC = gcc
-CFLAGS += -Wextra -Werror -Wall -g # -fsanitize=thread #Compile flags
+CFLAGS += -Wextra -Werror -Wall -g -fsanitize=thread #Compile flags
 LDFLAGS += -fsanitize=thread
 
 # This line itself doesn't actually generate the object files; it just sets up the 
@@ -37,9 +37,10 @@ all:
 %.o : %.c $(HEADER) Makefile
 	$(CC) $(CFLAGS) -c $< -o $@
 
+# $(NAME): $(OBJ) Makefile
+# 	$(CC) $(OBJ) -O3 -o $(NAME)
 $(NAME): $(OBJ) Makefile
-	$(CC) $(OBJ) -O3 -o $(NAME)
-# $(CC) $(OBJ) $(LDFLAGS) -O3 -o $(NAME)
+	$(CC) $(OBJ) $(LDFLAGS) -O3 -o $(NAME)
 
 clean:
 	rm -f *.out *.o 
