@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/01 16:00:03 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/02 10:09:24 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,16 +89,12 @@ void	*routine(void *philo_data)
 int	main(int argc, char **argv)
 {
 	int				i = 0;
-	pthread_t		*tid = NULL;
 	t_god			*god;
 
 	if (check_input(argc, argv))
 		return (1);
 	god = create_god(argv);
 	if (!god)
-		return (-1);
-	tid = (pthread_t *)malloc(god->n_philo * sizeof(pthread_t));
-	if (!tid)
 		return (-1);
 	while (i < god->n_philo)
 	{
@@ -107,7 +103,7 @@ int	main(int argc, char **argv)
 		god->philo[i].god = god;
 		god->philo[i].fasting = get_time(god->start);
 		pthread_mutex_init(&god->philo[i].m_fasting, NULL);
-		pthread_create(&tid[i], NULL, routine, &god->philo[i]); //começa a thread
+		pthread_create(&god->philo[i].td, NULL, routine, &god->philo[i]); //começa a thread
 		i++;
 	}
 	//The observer
@@ -129,15 +125,15 @@ int	main(int argc, char **argv)
 	}
 	while (i < god->n_philo)
 	{
-		pthread_join(tid[i], NULL);		//espera pela thread
+		pthread_join(god->philo[i].td, NULL);		//espera pela thread
 		// printf("Thread %d has finished execution\n", i);
 		i++;
 	}
-	// pthread_mutex_destroy(&god->mutex_all_alive);
-	// i = 0;
-	// while (i < god->n_philo)
-	// 	pthread_mutex_destroy(&god->mutex_fork[i++]);
-	// free(god->mutex_fork);
+	pthread_mutex_destroy(&god->mutex_all_alive);
+	i = 0;
+	while (i < god->n_philo)
+		pthread_mutex_destroy(&god->mutex_fork[i++]);
+	free(god->mutex_fork);
 	//TODO: free do tid e god e dos philos, mas antes rodar o leaks atExit
 	return (0);
 }
