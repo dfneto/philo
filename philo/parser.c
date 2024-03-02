@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:39:15 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/01 15:40:04 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/02 12:39:12 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,15 @@ int	ft_atoi(const char *str)
 		i++;
 	}
 	return ((int)result);
+}
+size_t	ft_strlen(const char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i] != '\0')
+		i++;
+	return (i);
 }
 
 int	check_input(int argc, char **argv)
@@ -49,6 +58,8 @@ int	check_input(int argc, char **argv)
 				return (printf("The params must be positive integers\n"), 1);
 			i++;
 		}
+		if (ft_strlen(*argv) > 9)
+			return (printf("Number too big\n"), 1);
 		i = 0;
 		argv++;
 	}
