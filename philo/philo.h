@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:34:11 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/02 10:06:56 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/02 10:45:35 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,11 @@ typedef enum
 	DIE
 } status;
 
+void			*routine(void *philo_data);
+void			create_philos_and_start_threads(t_god *god, void *routine(void *));
+int				define_left_fork(t_philo *philo);
+void			clean_and_destroy(t_god *god);
+void			wait_threads(t_god *god);
 void			print(t_philo *philo, int status);
 int             ft_atoi(const char *str);
 int             check_input(int argc, char **argv);
