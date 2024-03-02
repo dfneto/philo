@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/02 10:40:51 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/02 12:25:17 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,19 +125,21 @@ void	set_philo_to_start(t_philo *philo)
 		usleep(1000);
 }
 
-void	wait_threads(t_god *god)
+int	wait_threads(t_god *god)
 {
 	int	i;
 
 	i = 0;
 	while (i < god->n_philo)
 	{
-		pthread_join(god->philo[i].td, NULL);
+		if (pthread_join(god->philo[i].th, NULL))
+			return (4); //exit error 4
 		i++;
 	}
+	return (0);
 }
 
-void	clean_and_destroy(t_god *god)
+int	clean_and_destroy(t_god *god)
 {
 	int	i;
 
@@ -150,6 +152,7 @@ void	clean_and_destroy(t_god *god)
 	free(god->mutex_fork);
 	free(god->philo);
 	free(god);
+	return (0);
 }
 
 int	define_left_fork(t_philo *philo)
@@ -160,9 +163,9 @@ int	define_left_fork(t_philo *philo)
 		return (philo->id - 1);
 }
 
-void	create_philos_and_start_threads(t_god *god, void	*routine(void *))
+int	create_philos_and_start_threads(t_god *god, void *routine(void *))
 {
-	int	i;
+	int			i;
 
 	i = 0;
 	while (i < god->n_philo)
@@ -172,7 +175,9 @@ void	create_philos_and_start_threads(t_god *god, void	*routine(void *))
 		god->philo[i].god = god;
 		god->philo[i].fasting = get_time(god->start);
 		pthread_mutex_init(&god->philo[i].m_fasting, NULL);
-		pthread_create(&god->philo[i].td, NULL, routine, &god->philo[i]); //começa a thread
+		if (pthread_create(&god->philo[i].th, NULL, routine, &god->philo[i])) //começa a thread
+			return (3); //exit_error
 		i++;
 	}
+	return (0);
 }

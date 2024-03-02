@@ -6,29 +6,9 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/02 10:47:25 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/02 12:21:46 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-//TODO: ver o caso make && ./philo 10 310 150 100
-//TODO: ver porque nesse caso ./philo 5 410 200 200 sempre o zero morre primeiro
-//TODO: criar exit_error function e limitar números de até 9 dígitos
-//TODO: stops when all phisolophers eat enough
-//TODO: handle mutex init error, free pointers, destroy mutex etc.
-//TODO: acho que faz mais sentido ter um mutex_fasting por filósofo, mas um geral em god tbm funciona
-//TODO: testar com 0, 1, 5, 10 e 200 filósofos. Testar com diferentes tempos e com -1, 0, n em times_to_eat. Usar algum tester tbm
-//TODO: testar data race
-//DONE: Check if one philosopher died and finish execution
-//DONE: Mutex the fork. O garfo tá disponível? Pego e seguro até o outro estar disponível.
-//DONE: Soltar o garfo quando um deles não está disponível - No voy a hacer
-//DONE: criar uma thread (outra rotina com mesmo god) que observa se os filósofos estão vivos e se um morreu imprime que ela morreu pq pense no exe: 2 filósofos
-// que levam 300ms para comer e 200ms para morrer. Quando o primeiro come o segundo vai morrer em 200ms contudo como ele que vai printar
-// sua morte, vai printar em 300 e não 200. make && ./philo 2 100 300 100. Isso acontece porque enquanto o 1 está comendo (com os dois garfos) o 2 está espereando sua
-// vez no pthread_mutex_lock. Quando o 1 libera os garfos, 2 bloqueia o garfo e vai verificar se morreu. - OK
-//DONE: talvez deva implementar mutex em all_alive. Não entendo como aparentemente funciona. Talvez tenha um data race aí. Checar com fsanitize. -> Sim,
-// havia um data race nesse ponto porque ao mesmo tempo que um filósofo queria saber se todos estavam vivos, o observador estava alterando esse valor
-//DONE: passar a thread para dentro do filósofo.
-
 
 /* 
 * pthread_mutex_lock(&god->mutex_fork[i]) : if the mutex is already locked by 
@@ -46,16 +26,21 @@
 
 int	main(int argc, char **argv)
 {
-	int		i;
 	t_god	*god;
 
 	if (check_input(argc, argv))
-		return (1);
+		return (1); //retornar exit_error 1
+	if (argv[1][0] == '0')
+		return (0);
 	god = create_god(argv);
 	if (!god)
-		return (-1);
-	create_philos_and_start_threads(god, routine);
+		return (-1); //retornar exit_error 2
+	if (create_philos_and_start_threads(god, routine))
+		return (clean_and_destroy(god), 3); // retornar exit_error 3
+
+	
 	//The observer
+	int		i;
 	i = 0;
 	while (all_alive(god))
 	{
@@ -72,9 +57,9 @@ int	main(int argc, char **argv)
 				pthread_mutex_unlock(&god->mutex_all_alive);
 		i = 0;
 	}
-	wait_threads(god);
-	clean_and_destroy(god);
-	return (0);
+	if (wait_threads(god))
+		return (clean_and_destroy(god), 4);
+	return (clean_and_destroy(god));
 }
 /*
 	//TODO: All phisolophers eat enough?
