@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:39:15 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/02 12:39:12 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/02 14:16:50 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int	check_input(int argc, char **argv)
 			"and optionally number_of_times_each_philosopher_must_eat\n");
 		return (1);
 	}
+	if (ft_atoi(argv[1]) > 4000)
+		return (printf("Maximum philosophers (4000) exceeded\n"), 1);
 	argv++;
 	while (*argv)
 	{
@@ -58,9 +60,9 @@ int	check_input(int argc, char **argv)
 				return (printf("The params must be positive integers\n"), 1);
 			i++;
 		}
+		i = 0;
 		if (ft_strlen(*argv) > 9)
 			return (printf("Number too big\n"), 1);
-		i = 0;
 		argv++;
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 10:47:05 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/02 10:47:20 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/02 14:00:39 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@ void	*routine(void *philo_data)
 		pthread_mutex_lock(&god->mutex_fork[philo->id]);
 		if (all_alive(god)) 
 			print(philo, FORK);
+		if (god->n_philo == 1)
+		{
+			pthread_mutex_unlock(&god->mutex_fork[philo->id]);
+			break; 
+		}
 		left = define_left_fork(philo);
 		pthread_mutex_lock(&god->mutex_fork[left]);
 		if (all_alive(god))
