@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/01 16:10:02 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/02 09:59:00 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,16 +92,20 @@ int	all_alive(t_god *god)
 void	print(t_philo *philo, int status)
 {
 	pthread_mutex_lock(&philo->god->m_print);
-	if (status == FORK)
-		printf("%.5lld %d has taken a fork\n", get_time(philo->god->start), philo->id);
-	if (status == EAT)
-		printf("%.5lld %d is eating\n", get_time(philo->god->start), philo->id);
-	if (status == SLEEP)
-		printf("%.5lld %d is sleeping\n", get_time(philo->god->start), philo->id);
-	if (status == THINK)
-		printf("%.5lld %d is thinkings\n", get_time(philo->god->start), philo->id);
-	if (status == DIE)
-		printf("\033[31m%.5lld %d died\033[0m\n", get_time(philo->god->start), philo->id);
+	// if (all_alive(philo->god)) um mutex fica esperando outro
+	if (philo->god->all_alive) 
+	{
+		if (status == FORK)
+			printf("%.5lld %d has taken a fork\n", get_time(philo->god->start), philo->id);
+		if (status == EAT)
+			printf("%.5lld %d is eating\n", get_time(philo->god->start), philo->id);
+		if (status == SLEEP)
+			printf("%.5lld %d is sleeping\n", get_time(philo->god->start), philo->id);
+		if (status == THINK)
+			printf("%.5lld %d is thinking\n", get_time(philo->god->start), philo->id);
+		if (status == DIE)
+			printf("\033[31m%.5lld %d died\033[0m\n", get_time(philo->god->start), philo->id);
+	}
 	pthread_mutex_unlock(&philo->god->m_print);
 }
 
