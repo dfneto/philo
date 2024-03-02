@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:34:11 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/02 12:23:18 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/02 12:32:04 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef enum
 	DIE
 } status;
 
+int				exit_error(int	error);
 void			*routine(void *philo_data);
 int				create_philos_and_start_threads(t_god *god, void *routine(void *));
 int				define_left_fork(t_philo *philo);

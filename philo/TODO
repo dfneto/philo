@@ -1,6 +1,7 @@
+//TODO:  ./philo 5000 10 20 30 termina sem ninguém morrer
+//TODO: ./philo 9999999 10 20 30 seg fault
 //TODO: ver o caso make && ./philo 10 310 150 100
 //TODO: ver porque nesse caso ./philo 5 410 200 200 sempre o zero morre primeiro
-//TODO: criar exit_error function e limitar números de até 9 dígitos
 //TODO: stops when all phisolophers eat enough
 //TODO: handle mutex init error, free pointers, destroy mutex etc.
 //TODO: acho que faz mais sentido ter um mutex_fasting por filósofo, mas um geral em god tbm funciona
@@ -16,3 +17,4 @@
 //DONE: talvez deva implementar mutex em all_alive. Não entendo como aparentemente funciona. Talvez tenha um data race aí. Checar com fsanitize. -> Sim,
 // havia um data race nesse ponto porque ao mesmo tempo que um filósofo queria saber se todos estavam vivos, o observador estava alterando esse valor
 //DONE: passar a thread para dentro do filósofo.
+//DONE: criar exit_error function e limitar números de até 9 dígitos

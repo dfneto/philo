@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/02 12:25:17 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/02 12:33:24 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ int	wait_threads(t_god *god)
 	while (i < god->n_philo)
 	{
 		if (pthread_join(god->philo[i].th, NULL))
-			return (4); //exit error 4
+			return (4);
 		i++;
 	}
 	return (0);
@@ -176,8 +176,21 @@ int	create_philos_and_start_threads(t_god *god, void *routine(void *))
 		god->philo[i].fasting = get_time(god->start);
 		pthread_mutex_init(&god->philo[i].m_fasting, NULL);
 		if (pthread_create(&god->philo[i].th, NULL, routine, &god->philo[i])) //começa a thread
-			return (3); //exit_error
+			return (3);
 		i++;
 	}
+	return (0);
+}
+
+int	exit_error(int	error)
+{
+	if (error == 1)
+		printf("Input error\n");
+	if (error == 2)
+		printf("Malloc error\n");
+	if (error == 3)
+		printf("Thread creation error\n");
+	if (error == 4)
+		printf("Thread join error\n");
 	return (0);
 }

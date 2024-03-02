@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/02 12:21:46 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/02 12:33:51 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ int	main(int argc, char **argv)
 	t_god	*god;
 
 	if (check_input(argc, argv))
-		return (1); //retornar exit_error 1
+		return (exit_error(1));
 	if (argv[1][0] == '0')
 		return (0);
 	god = create_god(argv);
 	if (!god)
-		return (-1); //retornar exit_error 2
+		return (exit_error(2));
 	if (create_philos_and_start_threads(god, routine))
-		return (clean_and_destroy(god), 3); // retornar exit_error 3
+		return (clean_and_destroy(god), exit_error(3));
 
 	
 	//The observer
@@ -58,7 +58,7 @@ int	main(int argc, char **argv)
 		i = 0;
 	}
 	if (wait_threads(god))
-		return (clean_and_destroy(god), 4);
+		return (clean_and_destroy(god), exit_error(4));
 	return (clean_and_destroy(god));
 }
 /*
