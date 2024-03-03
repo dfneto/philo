@@ -1,4 +1,9 @@
-//TODO: ver o caso make && ./philo 10 310 150 100 - no da galera ninguém morre
+//TODO: ver o caso make && ./philo 10 310 150 100 - no da galera ninguém morre. 
+//Outro ex: ./philo 10 400 200 100. Este no de sebas não vai bem
+//TODO: ./philo 10 310 150 100 ainda imprime, as vezes, uma em cinco, depois da morte, a depender de onde faço o lock
+//pthread_mutex_lock(&god->mutex_all_alive) do observer
+
+//TODO: rever a morte de 1 filo como fiz, não gostei
 //TODO: acho que faz mais sentido ter um mutex_fasting por filósofo, mas um geral em god tbm funciona
 
 //TODO: stops when all phisolophers eat enough
@@ -22,3 +27,4 @@
 //DONE:  ./philo 5000 10 20 30 termina sem ninguém morrer - limitei 4k filósofos
 //DONE: ./philo 9999999 10 20 30 seg fault - limitei 4k filósofos
 //DONE: ver porque nesse caso ./philo 5 410 200 200 sempre o zero morre primeiro - normal, em todos sempre se repete o filósofo que morre
+//DONE:  ./philo 200 10 20 300 neste caso o filo morre em 150 e nao em 10
