@@ -6,7 +6,7 @@
 #    By: davifern <davifern@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/19 11:04:27 by davifern          #+#    #+#              #
-#    Updated: 2024/03/02 10:47:43 by davifern         ###   ########.fr        #
+#    Updated: 2024/03/03 14:06:15 by davifern         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,6 @@ all:
 
 $(NAME): $(OBJ) Makefile
 	$(CC) $(OBJ) -O3 -o $(NAME)
-# $(NAME): $(OBJ) Makefile
 # $(CC) $(OBJ) $(LDFLAGS) -O3 -o $(NAME)
 
 clean:
