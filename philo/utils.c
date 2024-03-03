@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/02 12:33:24 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/03 14:24:59 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,26 @@ t_god	*create_god(char **argv)
 	if (!god->philo)
 		return (NULL);
 	return (god);
+}
+
+int	clean_and_destroy(t_god *god)
+{
+	int	i;
+
+	i = 0;
+	pthread_mutex_destroy(&god->mutex_all_alive);
+	pthread_mutex_destroy(&god->m_print);
+	while (i < god->n_philo)
+	{
+		pthread_mutex_destroy(&god->mutex_fork[i]);
+		pthread_mutex_destroy(&god->philo[i].m_fasting);
+		i++;
+	}
+	//Ver se o leaks se eu comentar abaixo
+	free(god->mutex_fork);
+	free(god->philo);
+	free(god);
+	return (0);
 }
 
 /*
@@ -136,22 +156,6 @@ int	wait_threads(t_god *god)
 			return (4);
 		i++;
 	}
-	return (0);
-}
-
-int	clean_and_destroy(t_god *god)
-{
-	int	i;
-
-	i = 0;
-	pthread_mutex_destroy(&god->mutex_all_alive);
-	pthread_mutex_destroy(&god->m_print);
-	while (i < god->n_philo)
-		pthread_mutex_destroy(&god->mutex_fork[i++]);
-	//Ver se o leaks se eu comentar abaixo
-	free(god->mutex_fork);
-	free(god->philo);
-	free(god);
 	return (0);
 }
 
