@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/02 12:33:51 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/04 20:39:29 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,24 +37,34 @@ int	main(int argc, char **argv)
 		return (exit_error(2));
 	if (create_philos_and_start_threads(god, routine))
 		return (clean_and_destroy(god), exit_error(3));
-
+	int i = 0;
+	while (i < god->n_philo)
+	{
+		if (pthread_create(&god->philo[i].th, NULL, routine, &god->philo[i])) //começa a thread
+			return (3);
+		// god->philo[i].fasting = get_time(god->start);
+		// table->philos[i].last_meal = timestamp(); O Aitor e Sebas fazem depois de criar a thread
+		i++;
+	}
 	
 	//The observer
-	int		i;
+	// int		i;
 	i = 0;
-	while (all_alive(god))
+	while (god->all_alive)
 	{
-				pthread_mutex_lock(&god->mutex_all_alive);
+		// while (i < god->n_philo && god->all_alive) //TODO: ver se preciso do all_alive
 		while (i < god->n_philo)
 		{
 			if (philosopher_died(&god->philo[i]))
 			{
+				// pthread_mutex_lock(&god->mutex_all_alive); //subir para antes do philosopher_died no caso de printar depois da morte
 				god->all_alive = 0;
+				// pthread_mutex_unlock(&god->mutex_all_alive);
 				break ;
 			}
 			i++;
 		}
-				pthread_mutex_unlock(&god->mutex_all_alive);
+		// usleep(100); aitor faz isso... pq nao sei
 		i = 0;
 	}
 	if (wait_threads(god))

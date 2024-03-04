@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:34:11 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/02 12:32:04 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/04 14:55:39 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_god
 	long long		start;
 	pthread_mutex_t	m_print;
 	pthread_mutex_t	mutex_all_alive;
+	// pthread_mutex_t	m_god_fasting;
 	pthread_mutex_t	*mutex_fork;
 	t_philo			*philo;
 }	t_god;

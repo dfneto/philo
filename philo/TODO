@@ -1,7 +1,15 @@
+//no one should die: ./philo 4 410 200 200
 //TODO: ver o caso make && ./philo 10 310 150 100 - no da galera ninguém morre. 
 //Outro ex: ./philo 10 400 200 100. Este no de sebas não vai bem
 //TODO: ./philo 10 310 150 100 ainda imprime, as vezes, uma em cinco, depois da morte, a depender de onde faço o lock
 //pthread_mutex_lock(&god->mutex_all_alive) do observer
+
+
+//Testes:
+//./philo 200 10 20 300 - tem que morrer em até 11s
+//./philo 10 310 150 100  ,  ./philo 10 400 200 100
+// - não pode imprimir depois de morrer
+// - idealmente ninguem deve morrer
 
 //TODO: rever a morte de 1 filo como fiz, não gostei
 //TODO: acho que faz mais sentido ter um mutex_fasting por filósofo, mas um geral em god tbm funciona

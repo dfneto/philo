@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/03 14:24:59 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/04 20:56:19 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ t_god	*create_god(char **argv)
 		return (NULL);
 	get_input_data(argv, god);
 	god->all_alive = 1;
+	// pthread_mutex_init(&god->m_god_fasting, NULL);
 	pthread_mutex_init(&god->mutex_all_alive, NULL);
 	pthread_mutex_init(&god->m_print, NULL);
 	god->mutex_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * god->n_philo);
@@ -82,9 +83,11 @@ int		philosopher_died(t_philo *philo)
 	int				ret;
 
 	ret = 0;
+	// if (philo->fasting == -1)
+	// 	return (0);
+	pthread_mutex_lock(&philo->m_fasting); 	//TODO: talvez o erro seja nesse mutex
 	time_now = get_time(philo->god->start);
-	pthread_mutex_lock(&philo->m_fasting); 
-	if (time_now - philo->fasting > philo->god->time_to_die)
+	if (time_now - philo->fasting >= philo->god->time_to_die)
 	{
 		print(philo, DIE);
 		ret = 1;
@@ -117,8 +120,8 @@ int	all_alive(t_god *god)
 void	print(t_philo *philo, int status)
 {
 	pthread_mutex_lock(&philo->god->m_print);
-	// if (all_alive(philo->god)) um mutex fica esperando outro
-	if (philo->god->all_alive) 
+	if (all_alive(philo->god))
+	// if (philo->god->all_alive)
 	{
 		if (status == FORK)
 			printf("%.5lld %d has taken a fork\n", get_time(philo->god->start), philo->id);
@@ -141,8 +144,8 @@ void	print(t_philo *philo, int status)
 */
 void	set_philo_to_start(t_philo *philo)
 {
-	if (philo->id % 2 == 1 || philo->id == philo->god->n_philo - 1)
-		usleep(1000);
+	if (philo->id % 2 == 1)// || philo->id == philo->god->n_philo - 1)
+		usleep(1500);
 }
 
 int	wait_threads(t_god *god)
@@ -169,6 +172,7 @@ int	define_left_fork(t_philo *philo)
 
 int	create_philos_and_start_threads(t_god *god, void *routine(void *))
 {
+	(void)routine;
 	int			i;
 
 	i = 0;
@@ -179,8 +183,10 @@ int	create_philos_and_start_threads(t_god *god, void *routine(void *))
 		god->philo[i].god = god;
 		god->philo[i].fasting = get_time(god->start);
 		pthread_mutex_init(&god->philo[i].m_fasting, NULL);
-		if (pthread_create(&god->philo[i].th, NULL, routine, &god->philo[i])) //começa a thread
-			return (3);
+		// if (pthread_create(&god->philo[i].th, NULL, routine, &god->philo[i])) //começa a thread
+			// return (3);
+		// god->philo[i].fasting = get_time(god->start);
+		// table->philos[i].last_meal = timestamp(); O Aitor e Sebas fazem depois de criar a thread
 		i++;
 	}
 	return (0);
