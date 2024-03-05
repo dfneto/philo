@@ -6,16 +6,18 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 10:47:05 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/05 12:21:48 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/05 12:39:34 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 /*
-* usleep(100) é para não sobrecarregar o processador neste loop infinito. Então
-* dizemos: calcule o if e espere 100us, depois calcule e espere; e então o processador
-* pode fazer outra coisa. Ao invés de:
+* Fazemos nossa função de sleep porque usleep espera o tempo e mais um pouquinho.
+* Ex: você pede para dormir 100ms (usleep(100*1000)) e ele dorme 102ms.
+* Acrescentamos um usleep(100) no loop para não sobrecarregar o processador neste 
+* loop infinito. Então dizemos: calcule o if e espere 100us, depois calcule e 
+* espere e então o processador pode fazer outra coisa. Ao invés de:
 * calcule, calcule, calcule infinitamente.
 */
 void	ft_sleep(long long time, t_god *god)
@@ -53,21 +55,16 @@ void	*routine(void *philo_data)
 		left = define_left_fork(philo);
 		pthread_mutex_lock(&god->mutex_fork[left]);
 		print(philo, FORK);
-
 		print(philo, EAT);
 		pthread_mutex_lock(&philo->m_fasting);
 		philo->fasting = get_time(god->start);
 		pthread_mutex_unlock(&philo->m_fasting);
 		philo->times_eaten++;
-		// usleep(god->time_to_eat * 1000);
 		ft_sleep(god->time_to_eat, philo->god);
 		pthread_mutex_unlock(&god->mutex_fork[philo->id]);
 		pthread_mutex_unlock(&god->mutex_fork[left]);
-		
 		print(philo, SLEEP);
-		// usleep(god->time_to_sleep * 1000);
-		ft_sleep(god->time_to_sleep, philo->god);
-		
+		ft_sleep(god->time_to_eat, philo->god);
 		print(philo, THINK);
 	}
 	return (NULL);

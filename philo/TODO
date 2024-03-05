@@ -8,13 +8,12 @@
 //./philo 10 310 150 100  ,  ./philo 10 400 200 100
 // - não pode imprimir depois de morrer
 // - idealmente ninguem deve morrer
+//testar data race
 
 //TODO: rever a morte de 1 filo como fiz, não gostei
 
 //TODO: stops when all phisolophers eat enough
 //TODO: testar com 0, 1, 5, 10 e 200 filósofos. Testar com diferentes tempos e com -1 (ok), 0, n em times_to_eat. Usar algum tester tbm
-
-//TODO: testar data race
 //------------------
 //DONE: Check if one philosopher died and finish execution
 //DONE: Mutex the fork. O garfo tá disponível? Pego e seguro até o outro estar disponível.
