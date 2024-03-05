@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 10:47:05 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/05 15:44:30 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/05 16:13:43 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,6 @@
 * calcule, calcule, calcule infinitamente.
 * usleep(10): é evitar que imprima algo depois de morto
 */
-// void	ft_sleep(long long time, t_god *god)
-// {
-// 	long long	init_time;
-	
-// 	init_time = get_time(god->start);
-// 	while (1)
-// 	{
-// 		if (get_time(god->start) - init_time >= time)
-// 			break ;
-// 		usleep(100);
-// 	}
-// 	usleep(10);
-// }
-
 void	ft_sleep(long long time)
 {
 	long long	limit_time;
@@ -67,18 +53,18 @@ void	*routine(void *philo_data)
 	
 	pthread_mutex_lock(&god->m_start);
 	pthread_mutex_unlock(&god->m_start);
-	philo->fasting = get_time(god->start);
+	philo->last_meal = get_time(god->start);
 	
-	while (all_alive(god))
+	while (all_alive(god))//  && philo->times_eaten < god->n_times_eat)
 	{
 		pthread_mutex_lock(&god->mutex_fork[philo->id]);
 		print(philo, FORK);
 		pthread_mutex_lock(&god->mutex_fork[left]);
 		print(philo, FORK);
 		print(philo, EAT);
-		pthread_mutex_lock(&philo->m_fasting);
-		philo->fasting = get_time(god->start);
-		pthread_mutex_unlock(&philo->m_fasting);
+		pthread_mutex_lock(&philo->m_last_meal);
+		philo->last_meal = get_time(god->start);
+		pthread_mutex_unlock(&philo->m_last_meal);
 		philo->times_eaten++;
 		ft_sleep(god->time_to_eat);
 		pthread_mutex_unlock(&god->mutex_fork[philo->id]);

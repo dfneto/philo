@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:34:11 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/05 15:04:02 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/05 16:12:54 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ typedef struct s_philo
 {
 	int				id;
 	int				times_eaten;
-	long long		fasting;
+	long long		last_meal;
 	pthread_t		th;
-	pthread_mutex_t	m_fasting;
+	pthread_mutex_t	m_last_meal;
 	t_god			*god;
 }   t_philo;
 

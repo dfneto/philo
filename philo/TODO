@@ -1,7 +1,7 @@
 //Outro ex: ./philo 10 400 200 100. 
 //1. Eu morro (Julia não morrem porque faz > time enquanto eu >= time, Sebas sim, Nacho subtrai 10ms, Aitor tá mais tunado que carro com veneno)
 2. imprimo depois de morrer
-
+//./philo 200 100 100 3 morre sem pegar o garfo
 
 //TODO: stops when all phisolophers eat enough
 
@@ -12,8 +12,6 @@
 // - idealmente ninguem deve morrer
 //testar data race
 
-//TODO: rever a morte de 1 filo como fiz, não gostei
-//TODO: mudar nome de fasting para last meal
 //TODO: testar com 0, 1, 5, 10 e 200 filósofos. Testar com diferentes tempos e com -1 (ok), 0, n em times_to_eat. Usar algum tester tbm
 //------------------
 //DONE: Check if one philosopher died and finish execution
@@ -41,3 +39,5 @@
 //DONE: fazer my_time igual do Nacho
 //DONE: criar usando mutex uma forma de fazer com que todas as threads comecem juntas
 // e juntas com o observador
+//DONE: rever a morte de 1 filo como fiz, não gostei
+//DONE: mudar nome de fasting para last meal

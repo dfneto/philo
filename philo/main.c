@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/05 15:44:25 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/05 16:12:37 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	main(int argc, char **argv)
 	{
 		if (pthread_create(&god->philo[i].th, NULL, routine, &god->philo[i])) //começa a thread
 			return (3);
-		god->philo[i].fasting = get_time(god->start);
+		god->philo[i].last_meal = get_time(god->start);
 		i++;
 	}
 	pthread_mutex_unlock(&god->m_start);

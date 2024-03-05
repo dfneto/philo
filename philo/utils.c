@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/05 15:44:17 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/05 16:12:54 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	clean_and_destroy(t_god *god)
 	while (i < god->n_philo)
 	{
 		pthread_mutex_destroy(&god->mutex_fork[i]);
-		pthread_mutex_destroy(&god->philo[i].m_fasting);
+		pthread_mutex_destroy(&god->philo[i].m_last_meal);
 		i++;
 	}
 	//Ver se o leaks se eu comentar abaixo
@@ -86,14 +86,14 @@ int		philosopher_died(t_philo *philo)
 	ret = 0;
 	// if (philo->fasting == -1)
 	// 	return (0);
-	pthread_mutex_lock(&philo->m_fasting); 	//TODO: talvez o erro seja nesse mutex
+	pthread_mutex_lock(&philo->m_last_meal); 	//TODO: talvez o erro seja nesse mutex
 	time_now = get_time(philo->god->start);
-	if (time_now - philo->fasting >= philo->god->time_to_die)
+	if (time_now - philo->last_meal >= philo->god->time_to_die)
 	{
 		print(philo, DIE);
 		ret = 1;
 	}
-	pthread_mutex_unlock(&philo->m_fasting);
+	pthread_mutex_unlock(&philo->m_last_meal);
 	return (ret);
 	
 }
@@ -182,8 +182,8 @@ int	create_philos_and_start_threads(t_god *god, void *routine(void *))
 		god->philo[i].id = i;
 		god->philo[i].times_eaten = 0;
 		god->philo[i].god = god;
-		god->philo[i].fasting = get_time(god->start);
-		pthread_mutex_init(&god->philo[i].m_fasting, NULL);
+		god->philo[i].last_meal = get_time(god->start);
+		pthread_mutex_init(&god->philo[i].m_last_meal, NULL);
 		// if (pthread_create(&god->philo[i].th, NULL, routine, &god->philo[i])) //começa a thread
 			// return (3);
 		// god->philo[i].fasting = get_time(god->start);
