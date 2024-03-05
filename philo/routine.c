@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 10:47:05 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/05 15:41:22 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/05 15:44:30 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ void	*routine(void *philo_data)
 	}
 	left = define_left_fork(philo);
 	
-	// pthread_mutex_lock(&god->m_start);
-	// pthread_mutex_unlock(&god->m_start);
+	pthread_mutex_lock(&god->m_start);
+	pthread_mutex_unlock(&god->m_start);
 	philo->fasting = get_time(god->start);
 	
 	while (all_alive(god))

@@ -1,7 +1,9 @@
-//Outro ex: ./philo 10 400 200 100. Este no de sebas não vai bem
+//Outro ex: ./philo 10 400 200 100. 
+//1. Eu morro (Julia não morrem porque faz > time enquanto eu >= time, Sebas sim, Nacho subtrai 10ms, Aitor tá mais tunado que carro com veneno)
+2. imprimo depois de morrer
 
 
-
+//TODO: stops when all phisolophers eat enough
 
 //Testes:
 //./philo 200 10 20 300 - tem que morrer em até 11s
@@ -11,8 +13,7 @@
 //testar data race
 
 //TODO: rever a morte de 1 filo como fiz, não gostei
-
-//TODO: stops when all phisolophers eat enough
+//TODO: mudar nome de fasting para last meal
 //TODO: testar com 0, 1, 5, 10 e 200 filósofos. Testar com diferentes tempos e com -1 (ok), 0, n em times_to_eat. Usar algum tester tbm
 //------------------
 //DONE: Check if one philosopher died and finish execution
@@ -37,3 +38,6 @@
 //DONE: ./philo 10 310 150 100 ainda imprime, as vezes, uma em cinco, depois da morte, a depender de onde faço o lock
 //pthread_mutex_lock(&god->mutex_all_alive) do observer
 //DONE: acho que faz mais sentido ter um mutex_fasting por filósofo, mas um geral em god tbm funciona
+//DONE: fazer my_time igual do Nacho
+//DONE: criar usando mutex uma forma de fazer com que todas as threads comecem juntas
+// e juntas com o observador

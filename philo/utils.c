@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/05 15:43:19 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/05 15:44:17 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_god	*create_god(char **argv)
 	god->all_alive = 1;
 	pthread_mutex_init(&god->mutex_all_alive, NULL);
 	pthread_mutex_init(&god->m_print, NULL);
-	// pthread_mutex_init(&god->m_start, NULL);
+	pthread_mutex_init(&god->m_start, NULL);
 	god->mutex_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * god->n_philo);
 	if (!god->mutex_fork)
 		return (NULL);
@@ -59,7 +59,7 @@ int	clean_and_destroy(t_god *god)
 	i = 0;
 	pthread_mutex_destroy(&god->mutex_all_alive);
 	pthread_mutex_destroy(&god->m_print);
-	// pthread_mutex_destroy(&god->m_start);
+	pthread_mutex_destroy(&god->m_start);
 	while (i < god->n_philo)
 	{
 		pthread_mutex_destroy(&god->mutex_fork[i]);

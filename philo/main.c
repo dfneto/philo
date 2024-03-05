@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/05 15:41:16 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/05 15:44:25 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	main(int argc, char **argv)
 		return (exit_error(2));
 	if (create_philos_and_start_threads(god, routine))
 		return (clean_and_destroy(god), exit_error(3));
-	// pthread_mutex_lock(&god->m_start);
+	pthread_mutex_lock(&god->m_start);
 	while (i < god->n_philo)
 	{
 		if (pthread_create(&god->philo[i].th, NULL, routine, &god->philo[i])) //começa a thread
@@ -47,7 +47,7 @@ int	main(int argc, char **argv)
 		god->philo[i].fasting = get_time(god->start);
 		i++;
 	}
-	// pthread_mutex_unlock(&god->m_start);
+	pthread_mutex_unlock(&god->m_start);
 	god->start = get_current_time();
 	while (god->all_alive)
 	{
