@@ -1,9 +1,5 @@
-//Outro ex: ./philo 10 400 200 100. 
-//1. Eu morro (Julia não morrem porque faz > time enquanto eu >= time, Sebas sim, Nacho subtrai 10ms, Aitor tá mais tunado que carro com veneno)
-2. imprimo depois de morrer
-//./philo 200 100 100 3 morre sem pegar o garfo
-
 //TODO: stops when all phisolophers eat enough
+//./philo 200 100 100 3 morre sem pegar o garfo
 
 //Testes:
 //./philo 200 10 20 300 - tem que morrer em até 11s
@@ -13,6 +9,8 @@
 //testar data race
 
 //TODO: testar com 0, 1, 5, 10 e 200 filósofos. Testar com diferentes tempos e com -1 (ok), 0, n em times_to_eat. Usar algum tester tbm
+
+
 //------------------
 //DONE: Check if one philosopher died and finish execution
 //DONE: Mutex the fork. O garfo tá disponível? Pego e seguro até o outro estar disponível.
@@ -41,3 +39,7 @@
 // e juntas com o observador
 //DONE: rever a morte de 1 filo como fiz, não gostei
 //DONE: mudar nome de fasting para last meal
+//DONE:
+//Outro ex: ./philo 10 400 200 100. 
+//1. Eu morro (Julia não morrem porque faz > time enquanto eu >= time, Sebas sim, Nacho subtrai 10ms, Aitor tá mais tunado que carro com veneno)
+//2. imprimo depois de morrer
