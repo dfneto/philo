@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/04 20:56:19 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/05 15:43:19 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	get_input_data(char **argv, t_god *god)
 {
-	god->start = get_start_time();
+	god->start = 0;
 	god->n_philo = ft_atoi(argv[1]);
 	god->time_to_die = ft_atoi(argv[2]);
 	god->time_to_eat = ft_atoi(argv[3]);
@@ -35,9 +35,9 @@ t_god	*create_god(char **argv)
 		return (NULL);
 	get_input_data(argv, god);
 	god->all_alive = 1;
-	// pthread_mutex_init(&god->m_god_fasting, NULL);
 	pthread_mutex_init(&god->mutex_all_alive, NULL);
 	pthread_mutex_init(&god->m_print, NULL);
+	// pthread_mutex_init(&god->m_start, NULL);
 	god->mutex_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * god->n_philo);
 	if (!god->mutex_fork)
 		return (NULL);
@@ -59,6 +59,7 @@ int	clean_and_destroy(t_god *god)
 	i = 0;
 	pthread_mutex_destroy(&god->mutex_all_alive);
 	pthread_mutex_destroy(&god->m_print);
+	// pthread_mutex_destroy(&god->m_start);
 	while (i < god->n_philo)
 	{
 		pthread_mutex_destroy(&god->mutex_fork[i]);

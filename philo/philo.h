@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:34:11 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/04 14:55:39 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/05 15:04:02 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_god
 	long long		start;
 	pthread_mutex_t	m_print;
 	pthread_mutex_t	mutex_all_alive;
-	// pthread_mutex_t	m_god_fasting;
+	pthread_mutex_t	m_start;
 	pthread_mutex_t	*mutex_fork;
 	t_philo			*philo;
 }	t_god;
@@ -67,7 +67,7 @@ int             check_input(int argc, char **argv);
 int				philosopher_died(t_philo *philo);
 int				all_alive(t_god *god);
 long long		get_time(long long start);
-long long		get_start_time(void);
+long long		get_current_time(void);
 t_god			*create_god(char **argv);
 void		 	set_philo_to_start(t_philo *philo);
 #endif

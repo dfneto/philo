@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:41:27 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/01 15:41:58 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/05 14:41:32 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ long long	get_time(long long start)
 	return (time_now - start);
 }
 
-long long	get_start_time(void)
+/*
+* Returns the current time in miliseconds
+*/
+long long	get_current_time(void)
 {
 	long long		time_now;
 	struct timeval	now;

@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/05 12:10:33 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/05 15:41:16 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@
 int	main(int argc, char **argv)
 {
 	t_god	*god;
+	int		i;
 
+	i = 0;
 	if (check_input(argc, argv))
 		return (exit_error(1));
 	if (argv[1][0] == '0')
@@ -37,22 +39,19 @@ int	main(int argc, char **argv)
 		return (exit_error(2));
 	if (create_philos_and_start_threads(god, routine))
 		return (clean_and_destroy(god), exit_error(3));
-	int i = 0;
+	// pthread_mutex_lock(&god->m_start);
 	while (i < god->n_philo)
 	{
 		if (pthread_create(&god->philo[i].th, NULL, routine, &god->philo[i])) //começa a thread
 			return (3);
-		// god->philo[i].fasting = get_time(god->start);
-		// table->philos[i].last_meal = timestamp(); O Aitor e Sebas fazem depois de criar a thread
+		god->philo[i].fasting = get_time(god->start);
 		i++;
 	}
-	
-	//The observer
-	// int		i;
-	i = 0;
+	// pthread_mutex_unlock(&god->m_start);
+	god->start = get_current_time();
 	while (god->all_alive)
 	{
-		// while (i < god->n_philo && god->all_alive) //TODO: ver se preciso do all_alive
+		i = 0;
 		while (i < god->n_philo)
 		{
 			if (philosopher_died(&god->philo[i]))
@@ -64,8 +63,6 @@ int	main(int argc, char **argv)
 			}
 			i++;
 		}
-		// usleep(100); aitor faz isso... pq nao sei
-		i = 0;
 	}
 	if (wait_threads(god))
 		return (clean_and_destroy(god), exit_error(4));
