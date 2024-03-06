@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:34:11 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/06 13:53:12 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/06 17:09:28 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int				eat_enough(t_philo *philo);
 
 /* create_destroy.c */
 t_god			*create_god(char **argv);
-int				create_philos(t_god *god);
+void			create_philos(t_god *god);
 int				clean_and_destroy(t_god *god);
 int				wait_threads(t_god *god);
 

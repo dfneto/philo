@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:39:15 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/06 13:49:56 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/06 17:13:37 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,15 @@ int	check_input(int argc, char **argv)
 	if (argv[5] && ft_atoi(argv[5]) == 0)
 		return (printf("If you want to set the number of times "
 				"that a philo needs to eat it must be more than 0.\n"), 1);
+	if (argv[1][0] == '0')
+		return (printf("0 philosophers not allowed\n"), 1);
 	argv++;
 	while (*argv)
 	{
-		while ((*argv)[i])
-		{
+		i = -1;
+		while ((*argv)[++i])
 			if ((*argv)[i] < 48 || (*argv)[i] > 57)
 				return (printf("The params must be positive integers\n"), 1);
-			i++;
-		}
-		i = 0;
 		if (ft_strlen(*argv) > 9)
 			return (printf("Number too big\n"), 1);
 		argv++;

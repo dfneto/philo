@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/06 13:55:34 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/06 17:14:59 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,33 +24,13 @@
 
 #include "philo.h"
 
-int	main(int argc, char **argv)
+void	run_observer(t_god *god)
 {
-	t_god	*god;
-	int		i;
 	int		philos_fed;
+	int		i;
 
 	i = 0;
 	philos_fed = 0;
-	if (check_input(argc, argv))
-		return (exit_error(1));
-	if (argv[1][0] == '0')
-		return (0);
-	god = create_god(argv);
-	if (!god)
-		return (exit_error(2));
-	if (create_philos(god))
-		return (clean_and_destroy(god), exit_error(3));
-	pthread_mutex_lock(&god->m_start);
-	while (i < god->n_philo)
-	{
-		if (pthread_create(&god->philo[i].th, NULL, routine, &god->philo[i]))
-			return (3);
-		god->philo[i].last_meal = get_time(god->start);
-		i++;
-	}
-	god->start = get_current_time();
-	pthread_mutex_unlock(&god->m_start);
 	while (god->all_alive && (philos_fed < god->n_philo))
 	{
 		i = 0;
@@ -64,12 +44,45 @@ int	main(int argc, char **argv)
 				break ;
 			}
 			pthread_mutex_lock(&god->philo[i].m_times_eaten);
-			if (god->n_times_eat > 0 && god->philo[i].times_eaten >= god->n_times_eat)
+			if (god->n_times_eat > 0
+				&& god->philo[i].times_eaten >= god->n_times_eat)
 				philos_fed++;
 			pthread_mutex_unlock(&god->philo[i].m_times_eaten);
 			i++;
 		}
 	}
+}
+
+int	create_threads(t_god *god)
+{
+	int	i;
+
+	i = 0;
+	pthread_mutex_lock(&god->m_start);
+	while (i < god->n_philo)
+	{
+		if (pthread_create(&god->philo[i].th, NULL, routine, &god->philo[i]))
+			return (3);
+		i++;
+	}
+	god->start = get_current_time();
+	pthread_mutex_unlock(&god->m_start);
+	return (0);
+}
+
+int	main(int argc, char **argv)
+{
+	t_god	*god;
+
+	if (check_input(argc, argv))
+		return (exit_error(1));
+	god = create_god(argv);
+	if (!god)
+		return (exit_error(2));
+	create_philos(god);
+	if (create_threads(god))
+		return (clean_and_destroy(god), exit_error(3));
+	run_observer(god);
 	if (wait_threads(god))
 		return (clean_and_destroy(god), exit_error(4));
 	return (clean_and_destroy(god));

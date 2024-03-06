@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:16:29 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/06 13:42:57 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/06 17:15:40 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_god	*create_god(char **argv)
 	return (god);
 }
 
-int	create_philos(t_god *god)
+void	create_philos(t_god *god)
 {
 	int			i;
 
@@ -56,7 +56,6 @@ int	create_philos(t_god *god)
 		pthread_mutex_init(&god->philo[i].m_times_eaten, NULL);
 		i++;
 	}
-	return (0);
 }
 
 int	clean_and_destroy(t_god *god)

@@ -1,5 +1,6 @@
-//./philo 200 400 100 100 3 - morro antes de comer. No do Nacho e Aitor eles têm tempo de comer.
-//Depois que morro eu demoro pra sair. Isso se percebe melhor quanto tenho muitos philos
+// Depois que morro eu demoro pra sair. Isso se percebe melhor quanto tenho muitos philos, contudo
+// se eu como o suficiente saio rápido. Ex: ./philo 200 4000 10 10 2 (termina a aplicação rapidamente)
+// vs ./philo 200 200 100 100 (morre e demora para terminar a aplicação)
 
 //------------------
 //DONE: Check if one philosopher died and finish execution
@@ -31,7 +32,7 @@
 //DONE: mudar nome de fasting para last meal
 //DONE:
 //Outro ex: ./philo 10 400 200 100. 
-//1. Eu morro (Julia não morrem porque faz > time enquanto eu >= time, Sebas sim, Nacho subtrai 10ms, Aitor tá mais tunado que carro com veneno)
+//1. Eu morro (Julia não morre porque faz > time enquanto eu >= time, Sebas sim, Nacho subtrai 10ms, Aitor tá mais tunado que carro com veneno)
 //2. imprimo depois de morrer
 //DONE: stops when all phisolophers eat enough
 //Testes OK:
@@ -43,3 +44,5 @@
 // - idealmente ninguem deve morrer
 //DONE: testar data race - OK
 //DONE: testar com 0, 1, 5, 10 e 200 filósofos. Testar com diferentes tempos e com -1 (ok), 0, n em times_to_eat.
+//./philo 200 400 100 100 3 - morro antes de comer. No do Nacho e Aitor eles têm tempo de comer.
+// Contudo, no do Nacho, se eu faço ./philo 200 390 100 100 ele termina a aplicação sem morrer
