@@ -1,18 +1,5 @@
-//./philo 200 400 100 100 3 trava
-//./philo 10 400 200 100
-
-//./philo 200 100 100 3 morre sem pegar o garfo
-
-
-//Testes:
-//./philo 200 10 20 300 - tem que morrer em até 11s
-//./philo 10 310 150 100  ,  ./philo 10 400 200 100
-// - não pode imprimir depois de morrer
-// - idealmente ninguem deve morrer
-//testar data race
-
-//TODO: testar com 0, 1, 5, 10 e 200 filósofos. Testar com diferentes tempos e com -1 (ok), 0, n em times_to_eat. Usar algum tester tbm
-
+//./philo 200 400 100 100 3 - morro antes de comer. No do Nacho e Aitor eles têm tempo de comer.
+//Depois que morro eu demoro pra sair. Isso se percebe melhor quanto tenho muitos philos
 
 //------------------
 //DONE: Check if one philosopher died and finish execution
@@ -47,3 +34,12 @@
 //1. Eu morro (Julia não morrem porque faz > time enquanto eu >= time, Sebas sim, Nacho subtrai 10ms, Aitor tá mais tunado que carro com veneno)
 //2. imprimo depois de morrer
 //DONE: stops when all phisolophers eat enough
+//Testes OK:
+//./philo 200 100 100 3 - ok
+//./philo 10 400 200 100 - ok
+//./philo 200 10 20 300 - ok
+//./philo 10 310 150 100 - ok
+// - não pode imprimir depois de morrer
+// - idealmente ninguem deve morrer
+//DONE: testar data race - OK
+//DONE: testar com 0, 1, 5, 10 e 200 filósofos. Testar com diferentes tempos e com -1 (ok), 0, n em times_to_eat.
