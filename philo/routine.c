@@ -6,33 +6,11 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 10:47:05 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/06 12:55:20 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/06 13:12:26 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-/*
-* Fazemos nossa função de sleep porque usleep espera o tempo e mais um pouquinho.
-* Ex: você pede para dormir 100ms (usleep(100*1000)) e ele dorme 102ms.
-* Acrescentamos um usleep(100) no loop para não sobrecarregar o processador neste 
-* loop infinito. Então dizemos: calcule o if e espere 100us, depois calcule e 
-* espere e então o processador pode fazer outra coisa. Ao invés de:
-* calcule, calcule, calcule infinitamente.
-* usleep(10): é evitar que imprima algo depois de morto
-*/
-void	ft_sleep(long long time)
-{
-	long long	limit_time;
-
-	limit_time = get_current_time() + time;
-	while (1)
-	{
-		if (get_current_time() >= limit_time)
-			break ;
-		usleep(100);
-	}
-}
 
 void	*routine(void *philo_data)
 {

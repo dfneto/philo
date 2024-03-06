@@ -6,14 +6,14 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:39:15 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/06 12:23:03 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/06 13:13:20 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 /* A simplified version of atoi*/
-int	ft_atoi(const char *str)
+static int	ft_atoi(const char *str)
 {
 	int		i;
 	long	result;
@@ -27,7 +27,7 @@ int	ft_atoi(const char *str)
 	}
 	return ((int)result);
 }
-size_t	ft_strlen(const char *s)
+static size_t	ft_strlen(const char *s)
 {
 	size_t	i;
 
@@ -52,7 +52,8 @@ int	check_input(int argc, char **argv)
 	if (ft_atoi(argv[1]) > 4000)
 		return (printf("Maximum philosophers (4000) exceeded\n"), 1);
 	if (argv[5] && ft_atoi(argv[5]) == 0)
-		return (printf("If you want to set the number of times that a philo needs to eat it must be more than 0.\n"), 1);
+		return (printf("If you want to set the number of times "
+					"that a philo needs to eat it must be more than 0.\n"), 1);
 	argv++;
 	while (*argv)
 	{
@@ -68,4 +69,16 @@ int	check_input(int argc, char **argv)
 		argv++;
 	}
 	return (0);
+}
+
+void	get_input_data(char **argv, t_god *god)
+{
+	god->start = 0;
+	god->n_philo = ft_atoi(argv[1]);
+	god->time_to_die = ft_atoi(argv[2]);
+	god->time_to_eat = ft_atoi(argv[3]);
+	god->time_to_sleep = ft_atoi(argv[4]);
+	god->n_times_eat = -1;
+	if (argv[5])
+		god->n_times_eat = ft_atoi(argv[5]);
 }

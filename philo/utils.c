@@ -6,123 +6,11 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/06 12:36:45 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/06 13:26:37 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-/*
-* Return 0: if the god->n_times_eat was not set (so it is -1) or
-* if the philosophers didn't still eat enough.
-*/
-int	eat_enough(t_philo *philo)
-{
-	if (philo->god->n_times_eat < 0)
-		return (0);
-	if (philo->times_eaten < philo->god->n_times_eat)
-		return (0);
-	return (1);
-}
-
-void	get_input_data(char **argv, t_god *god)
-{
-	god->start = 0;
-	god->n_philo = ft_atoi(argv[1]);
-	god->time_to_die = ft_atoi(argv[2]);
-	god->time_to_eat = ft_atoi(argv[3]);
-	god->time_to_sleep = ft_atoi(argv[4]);
-	god->n_times_eat = -1;
-	if (argv[5])
-		god->n_times_eat = ft_atoi(argv[5]);
-}
-
-t_god	*create_god(char **argv)
-{
-	t_god	*god;
-	int		i;
-
-	i = 0;
-	god = (t_god *)malloc(sizeof(t_god));
-	if (!god)
-		return (NULL);
-	get_input_data(argv, god);
-	god->all_alive = 1;
-	pthread_mutex_init(&god->mutex_all_alive, NULL);
-	pthread_mutex_init(&god->m_print, NULL);
-	pthread_mutex_init(&god->m_start, NULL);
-	god->mutex_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * god->n_philo);
-	if (!god->mutex_fork)
-		return (NULL);
-	while (i < god->n_philo)
-	{
-		pthread_mutex_init(&god->mutex_fork[i], NULL);
-		i++;
-	}
-	god->philo = (t_philo *)malloc(sizeof(t_philo) * god->n_philo);
-	if (!god->philo)
-		return (NULL);
-	return (god);
-}
-
-int	clean_and_destroy(t_god *god)
-{
-	int	i;
-
-	i = 0;
-	pthread_mutex_destroy(&god->mutex_all_alive);
-	pthread_mutex_destroy(&god->m_print);
-	pthread_mutex_destroy(&god->m_start);
-	while (i < god->n_philo)
-	{
-		pthread_mutex_destroy(&god->mutex_fork[i]);
-		pthread_mutex_destroy(&god->philo[i].m_last_meal);
-		pthread_mutex_destroy(&god->philo[i].m_times_eaten);
-		i++;
-	}
-	//Ver se o leaks se eu comentar abaixo
-	free(god->mutex_fork);
-	free(god->philo);
-	free(god);
-	return (0);
-}
-
-/*
-* Returns:
-*	1 - if the philospher died
-*	0 - if the philospher did not die
-*/
-int		philosopher_died(t_philo *philo)
-{
-	long long		time_now;
-	int				ret;
-
-	ret = 0;
-	// if (philo->fasting == -1)
-	// 	return (0);
-	pthread_mutex_lock(&philo->m_last_meal); 	//TODO: talvez o erro seja nesse mutex
-	time_now = get_time(philo->god->start);
-	if (time_now - philo->last_meal >= philo->god->time_to_die)
-	{
-		print(philo, DIE);
-		ret = 1;
-	}
-	pthread_mutex_unlock(&philo->m_last_meal);
-	return (ret);
-	
-}
-
-int	all_alive(t_god *god)
-{
-	int	ret;
-
-	ret = 0;
-	pthread_mutex_lock(&god->mutex_all_alive);
-	if (god->all_alive)
-		ret = 1;
-	pthread_mutex_unlock(&god->mutex_all_alive);
-	return (ret);
-}
 
 /*
 * Usamos un mutex para imprimir porque así se cría una cola de impresión
@@ -136,7 +24,6 @@ void	print(t_philo *philo, int status)
 {
 	pthread_mutex_lock(&philo->god->m_print);
 	if (all_alive(philo->god))
-	// if (philo->god->all_alive)
 	{
 		if (status == FORK)
 			printf("%.5lld %d has taken a fork\n", get_time(philo->god->start), philo->id);
@@ -159,22 +46,8 @@ void	print(t_philo *philo, int status)
 */
 void	set_philo_to_start(t_philo *philo)
 {
-	if (philo->id % 2 == 1)// || philo->id == philo->god->n_philo - 1)
+	if (philo->id % 2 == 1)
 		usleep(1500);
-}
-
-int	wait_threads(t_god *god)
-{
-	int	i;
-
-	i = 0;
-	while (i < god->n_philo)
-	{
-		if (pthread_join(god->philo[i].th, NULL))
-			return (4);
-		i++;
-	}
-	return (0);
 }
 
 int	define_left_fork(t_philo *philo)
@@ -183,29 +56,6 @@ int	define_left_fork(t_philo *philo)
 		return (philo->god->n_philo - 1);
 	else
 		return (philo->id - 1);
-}
-
-int	create_philos_and_start_threads(t_god *god, void *routine(void *))
-{
-	(void)routine;
-	int			i;
-
-	i = 0;
-	while (i < god->n_philo)
-	{
-		god->philo[i].id = i;
-		god->philo[i].times_eaten = 0;
-		god->philo[i].god = god;
-		god->philo[i].last_meal = get_time(god->start);
-		pthread_mutex_init(&god->philo[i].m_last_meal, NULL);
-		pthread_mutex_init(&god->philo[i].m_times_eaten, NULL);
-		// if (pthread_create(&god->philo[i].th, NULL, routine, &god->philo[i])) //começa a thread
-			// return (3);
-		// god->philo[i].fasting = get_time(god->start);
-		// table->philos[i].last_meal = timestamp(); O Aitor e Sebas fazem depois de criar a thread
-		i++;
-	}
-	return (0);
 }
 
 int	exit_error(int	error)

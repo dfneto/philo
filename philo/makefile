@@ -6,7 +6,7 @@
 #    By: davifern <davifern@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/19 11:04:27 by davifern          #+#    #+#              #
-#    Updated: 2024/03/03 14:06:15 by davifern         ###   ########.fr        #
+#    Updated: 2024/03/06 13:25:48 by davifern         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 NAME = philo
 MAKE = make
 HEADER = philo.h
-SRC = main.c utils.c parser.c time.c routine.c
+SRC = main.c utils.c parser.c time.c routine.c create_destroy.c stop_conditions.c
 CC = gcc
 CFLAGS += -Wextra -Werror -Wall -g #-fsanitize=thread #Compile flags
 LDFLAGS += -fsanitize=thread

@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:34:11 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/06 12:26:01 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/06 13:29:01 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,20 +56,33 @@ typedef enum
 	DIE
 } status;
 
-int				eat_enough(t_philo *philo);
-int				exit_error(int	error);
+/* routine.c */
 void			*routine(void *philo_data);
-int				create_philos_and_start_threads(t_god *god, void *routine(void *));
+
+/* utils.c */
+int				exit_error(int error);
 int				define_left_fork(t_philo *philo);
+void			print(t_philo *philo, int status);
+void		 	set_philo_to_start(t_philo *philo);
+
+/* stop_conditions.c */
+int				all_alive(t_god *god);
+int				philosopher_died(t_philo *philo);
+int				eat_enough(t_philo *philo);
+
+/* create_destroy.c */
+t_god			*create_god(char **argv);
+int				create_philos(t_god *god);
 int				clean_and_destroy(t_god *god);
 int				wait_threads(t_god *god);
-void			print(t_philo *philo, int status);
-int             ft_atoi(const char *str);
+
+/* parser.c */
 int             check_input(int argc, char **argv);
-int				philosopher_died(t_philo *philo);
-int				all_alive(t_god *god);
+void			get_input_data(char **argv, t_god *god);
+
+/* time.c */
 long long		get_time(long long start);
 long long		get_current_time(void);
-t_god			*create_god(char **argv);
-void		 	set_philo_to_start(t_philo *philo);
+void			ft_sleep(long long time);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/06 12:54:29 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/06 13:28:42 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@ int	main(int argc, char **argv)
 {
 	t_god	*god;
 	int		i;
+	int 	philos_fed;
 
 	i = 0;
+	philos_fed = 0;
 	if (check_input(argc, argv))
 		return (exit_error(1));
 	if (argv[1][0] == '0')
@@ -37,17 +39,16 @@ int	main(int argc, char **argv)
 	god = create_god(argv);
 	if (!god)
 		return (exit_error(2));
-	if (create_philos_and_start_threads(god, routine))
+	if (create_philos(god))
 		return (clean_and_destroy(god), exit_error(3));
 	pthread_mutex_lock(&god->m_start);
 	while (i < god->n_philo)
 	{
-		if (pthread_create(&god->philo[i].th, NULL, routine, &god->philo[i])) //começa a thread
+		if (pthread_create(&god->philo[i].th, NULL, routine, &god->philo[i]))
 			return (3);
 		god->philo[i].last_meal = get_time(god->start);
 		i++;
 	}
-	int philos_fed = 0;
 	god->start = get_current_time();
 	pthread_mutex_unlock(&god->m_start);
 	while (god->all_alive && (philos_fed < god->n_philo))
@@ -62,12 +63,10 @@ int	main(int argc, char **argv)
 				pthread_mutex_unlock(&god->mutex_all_alive);
 				break ;
 			}
-			//mutex lock
 			pthread_mutex_lock(&god->philo[i].m_times_eaten);
 			if (god->n_times_eat > 0 && god->philo[i].times_eaten >= god->n_times_eat)
 				philos_fed++;
 			pthread_mutex_unlock(&god->philo[i].m_times_eaten);
-			//mutex unlock
 			i++;
 		}
 	}

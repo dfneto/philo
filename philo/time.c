@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:41:27 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/05 14:41:32 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/06 13:12:40 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,26 @@ long long	get_current_time(void)
 	time_now = now.tv_sec * 1000 + now.tv_usec / 1000;
 	// printf("Start time: %lld\n", time_now);
 	return (time_now);
+}
+
+/*
+* Fazemos nossa função de sleep porque usleep espera o tempo e mais um pouquinho.
+* Ex: você pede para dormir 100ms (usleep(100*1000)) e ele dorme 102ms.
+* Acrescentamos um usleep(100) no loop para não sobrecarregar o processador neste 
+* loop infinito. Então dizemos: calcule o if e espere 100us, depois calcule e 
+* espere e então o processador pode fazer outra coisa. Ao invés de:
+* calcule, calcule, calcule infinitamente.
+* usleep(10): é evitar que imprima algo depois de morto
+*/
+void	ft_sleep(long long time)
+{
+	long long	limit_time;
+
+	limit_time = get_current_time() + time;
+	while (1)
+	{
+		if (get_current_time() >= limit_time)
+			break ;
+		usleep(100);
+	}
 }

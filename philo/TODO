@@ -1,6 +1,6 @@
 //./philo 200 400 100 100 3 trava
+//./philo 10 400 200 100
 
-//TODO: stops when all phisolophers eat enough
 //./philo 200 100 100 3 morre sem pegar o garfo
 
 
@@ -46,3 +46,4 @@
 //Outro ex: ./philo 10 400 200 100. 
 //1. Eu morro (Julia não morrem porque faz > time enquanto eu >= time, Sebas sim, Nacho subtrai 10ms, Aitor tá mais tunado que carro com veneno)
 //2. imprimo depois de morrer
+//DONE: stops when all phisolophers eat enough
