@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:41:27 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/06 15:59:06 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/06 18:04:03 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	ft_sleep(long long time)
 	{
 		if (get_current_time() >= limit_time)
 			break ;
-		usleep(100);
+		usleep(10);
 	}
 	usleep(10);
 }
