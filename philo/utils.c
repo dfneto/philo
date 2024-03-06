@@ -6,11 +6,24 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/05 16:12:54 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/06 12:36:45 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+/*
+* Return 0: if the god->n_times_eat was not set (so it is -1) or
+* if the philosophers didn't still eat enough.
+*/
+int	eat_enough(t_philo *philo)
+{
+	if (philo->god->n_times_eat < 0)
+		return (0);
+	if (philo->times_eaten < philo->god->n_times_eat)
+		return (0);
+	return (1);
+}
 
 void	get_input_data(char **argv, t_god *god)
 {
@@ -64,6 +77,7 @@ int	clean_and_destroy(t_god *god)
 	{
 		pthread_mutex_destroy(&god->mutex_fork[i]);
 		pthread_mutex_destroy(&god->philo[i].m_last_meal);
+		pthread_mutex_destroy(&god->philo[i].m_times_eaten);
 		i++;
 	}
 	//Ver se o leaks se eu comentar abaixo
@@ -184,6 +198,7 @@ int	create_philos_and_start_threads(t_god *god, void *routine(void *))
 		god->philo[i].god = god;
 		god->philo[i].last_meal = get_time(god->start);
 		pthread_mutex_init(&god->philo[i].m_last_meal, NULL);
+		pthread_mutex_init(&god->philo[i].m_times_eaten, NULL);
 		// if (pthread_create(&god->philo[i].th, NULL, routine, &god->philo[i])) //começa a thread
 			// return (3);
 		// god->philo[i].fasting = get_time(god->start);

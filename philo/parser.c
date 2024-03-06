@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:39:15 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/02 14:16:50 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/06 12:23:03 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ int	check_input(int argc, char **argv)
 	}
 	if (ft_atoi(argv[1]) > 4000)
 		return (printf("Maximum philosophers (4000) exceeded\n"), 1);
+	if (argv[5] && ft_atoi(argv[5]) == 0)
+		return (printf("If you want to set the number of times that a philo needs to eat it must be more than 0.\n"), 1);
 	argv++;
 	while (*argv)
 	{

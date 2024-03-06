@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 10:47:05 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/05 16:13:43 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/06 12:55:20 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,10 @@ void	*routine(void *philo_data)
 	}
 	left = define_left_fork(philo);
 	
-	pthread_mutex_lock(&god->m_start);
+	pthread_mutex_lock(&god->m_start); //não muda nada, mas gostei da ideia
 	pthread_mutex_unlock(&god->m_start);
-	philo->last_meal = get_time(god->start);
-	
-	while (all_alive(god))//  && philo->times_eaten < god->n_times_eat)
+	// philo->last_meal = get_time(god->start); da leaks
+	while (all_alive(god) && !eat_enough(philo))
 	{
 		pthread_mutex_lock(&god->mutex_fork[philo->id]);
 		print(philo, FORK);
@@ -65,7 +64,9 @@ void	*routine(void *philo_data)
 		pthread_mutex_lock(&philo->m_last_meal);
 		philo->last_meal = get_time(god->start);
 		pthread_mutex_unlock(&philo->m_last_meal);
+		pthread_mutex_lock(&philo->m_times_eaten);
 		philo->times_eaten++;
+		pthread_mutex_unlock(&philo->m_times_eaten);
 		ft_sleep(god->time_to_eat);
 		pthread_mutex_unlock(&god->mutex_fork[philo->id]);
 		pthread_mutex_unlock(&god->mutex_fork[left]);

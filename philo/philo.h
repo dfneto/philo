@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:34:11 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/05 16:12:54 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/06 12:26:01 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_philo
 	long long		last_meal;
 	pthread_t		th;
 	pthread_mutex_t	m_last_meal;
+	pthread_mutex_t m_times_eaten;
 	t_god			*god;
 }   t_philo;
 
@@ -55,6 +56,7 @@ typedef enum
 	DIE
 } status;
 
+int				eat_enough(t_philo *philo);
 int				exit_error(int	error);
 void			*routine(void *philo_data);
 int				create_philos_and_start_threads(t_god *god, void *routine(void *));

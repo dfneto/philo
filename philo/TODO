@@ -1,5 +1,8 @@
+//./philo 200 400 100 100 3 trava
+
 //TODO: stops when all phisolophers eat enough
 //./philo 200 100 100 3 morre sem pegar o garfo
+
 
 //Testes:
 //./philo 200 10 20 300 - tem que morrer em até 11s
