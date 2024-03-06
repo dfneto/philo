@@ -1,6 +1,7 @@
 // Depois que morro eu demoro pra sair. Isso se percebe melhor quanto tenho muitos philos, contudo
 // se eu como o suficiente saio rápido. Ex: ./philo 200 4000 10 10 2 (termina a aplicação rapidamente)
 // vs ./philo 200 200 100 100 (morre e demora para terminar a aplicação)
+// A Júlia sugere que seja porque usam detach
 
 //------------------
 //DONE: Check if one philosopher died and finish execution
