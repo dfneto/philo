@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:39:15 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/06 13:13:20 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/06 13:49:56 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static int	ft_atoi(const char *str)
 	}
 	return ((int)result);
 }
+
 static size_t	ft_strlen(const char *s)
 {
 	size_t	i;
@@ -37,23 +38,26 @@ static size_t	ft_strlen(const char *s)
 	return (i);
 }
 
+int	print_params_error(void)
+{
+	printf("You have to pass 4 ou 5 args: number_of_philosophers, "
+		"time_to_die, time_to_eat, time_to_sleep (all times in miliseconds)"
+		"and optionally number_of_times_each_philosopher_must_eat\n");
+	return (1);
+}
+
 int	check_input(int argc, char **argv)
 {
 	int	i;
 
 	i = 0;
 	if (argc < 5 || argc > 6)
-	{
-		printf("You have to pass 4 ou 5 args: number_of_philosophers, "
-			"time_to_die, time_to_eat, time_to_sleep (all times in miliseconds)"
-			"and optionally number_of_times_each_philosopher_must_eat\n");
-		return (1);
-	}
+		return (print_params_error());
 	if (ft_atoi(argv[1]) > 4000)
 		return (printf("Maximum philosophers (4000) exceeded\n"), 1);
 	if (argv[5] && ft_atoi(argv[5]) == 0)
 		return (printf("If you want to set the number of times "
-					"that a philo needs to eat it must be more than 0.\n"), 1);
+				"that a philo needs to eat it must be more than 0.\n"), 1);
 	argv++;
 	while (*argv)
 	{

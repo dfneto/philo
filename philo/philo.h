@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:34:11 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/06 13:29:01 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/06 13:53:12 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <pthread.h>
 # include <unistd.h>
 
-typedef struct s_god t_god;
+typedef struct s_god	t_god;
 typedef struct s_philo
 {
 	int				id;
@@ -27,9 +27,9 @@ typedef struct s_philo
 	long long		last_meal;
 	pthread_t		th;
 	pthread_mutex_t	m_last_meal;
-	pthread_mutex_t m_times_eaten;
+	pthread_mutex_t	m_times_eaten;
 	t_god			*god;
-}   t_philo;
+}	t_philo;
 
 typedef struct s_god
 {
@@ -47,14 +47,14 @@ typedef struct s_god
 	t_philo			*philo;
 }	t_god;
 
-typedef enum
+typedef enum s_status
 {
 	FORK,
 	EAT,
 	SLEEP,
 	THINK,
 	DIE
-} status;
+}	t_status;
 
 /* routine.c */
 void			*routine(void *philo_data);
@@ -63,7 +63,7 @@ void			*routine(void *philo_data);
 int				exit_error(int error);
 int				define_left_fork(t_philo *philo);
 void			print(t_philo *philo, int status);
-void		 	set_philo_to_start(t_philo *philo);
+void			set_philo_to_start(t_philo *philo);
 
 /* stop_conditions.c */
 int				all_alive(t_god *god);
@@ -77,7 +77,7 @@ int				clean_and_destroy(t_god *god);
 int				wait_threads(t_god *god);
 
 /* parser.c */
-int             check_input(int argc, char **argv);
+int				check_input(int argc, char **argv);
 void			get_input_data(char **argv, t_god *god);
 
 /* time.c */

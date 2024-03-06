@@ -6,18 +6,25 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 10:47:05 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/06 13:12:26 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/06 13:57:52 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
+/*
+* O lock e unlock do start não chegou a me dar um ganho de tempo,
+* mas gostei da ideia de forçar com que todas as threads comecem 
+* "juntas"
+* pthread_mutex_lock(&god->m_start); 
+* pthread_mutex_unlock(&god->m_start);
+*/
 void	*routine(void *philo_data)
 {
-	t_philo *philo;
+	t_philo	*philo;
 	t_god	*god;
-	int		left = 0;
+	int		left;
 
+	left = 0;
 	philo = (t_philo *)philo_data;
 	god = philo->god;
 	set_philo_to_start(philo);
@@ -25,13 +32,12 @@ void	*routine(void *philo_data)
 	{
 		print(philo, FORK);
 		ft_sleep(god->time_to_sleep);
-		return (NULL); 
+		return (NULL);
 	}
 	left = define_left_fork(philo);
-	
-	pthread_mutex_lock(&god->m_start); //não muda nada, mas gostei da ideia
+	pthread_mutex_lock(&god->m_start);
 	pthread_mutex_unlock(&god->m_start);
-	// philo->last_meal = get_time(god->start); da leaks
+	// philo->last_meal = get_time(god->start); da leaks sem mutex
 	while (all_alive(god) && !eat_enough(philo))
 	{
 		pthread_mutex_lock(&god->mutex_fork[philo->id]);

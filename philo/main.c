@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/06 13:28:42 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/06 13:55:34 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main(int argc, char **argv)
 {
 	t_god	*god;
 	int		i;
-	int 	philos_fed;
+	int		philos_fed;
 
 	i = 0;
 	philos_fed = 0;

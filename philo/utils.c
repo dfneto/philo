@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:01:07 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/06 13:26:37 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/06 13:59:37 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,20 @@ void	print(t_philo *philo, int status)
 	if (all_alive(philo->god))
 	{
 		if (status == FORK)
-			printf("%.5lld %d has taken a fork\n", get_time(philo->god->start), philo->id);
+			printf("%.5lld %d has taken a fork\n",
+				get_time(philo->god->start), philo->id);
 		if (status == EAT)
-			printf("%.5lld %d is eating\n", get_time(philo->god->start), philo->id);
+			printf("%.5lld %d is eating\n",
+				get_time(philo->god->start), philo->id);
 		if (status == SLEEP)
-			printf("%.5lld %d is sleeping\n", get_time(philo->god->start), philo->id);
+			printf("%.5lld %d is sleeping\n",
+				get_time(philo->god->start), philo->id);
 		if (status == THINK)
-			printf("%.5lld %d is thinking\n", get_time(philo->god->start), philo->id);
+			printf("%.5lld %d is thinking\n",
+				get_time(philo->god->start), philo->id);
 		if (status == DIE)
-			printf("\033[31m%.5lld %d died\033[0m\n", get_time(philo->god->start), philo->id);
+			printf("\033[31m%.5lld %d died\033[0m\n",
+				get_time(philo->god->start), philo->id);
 	}
 	pthread_mutex_unlock(&philo->god->m_print);
 }
@@ -58,7 +63,7 @@ int	define_left_fork(t_philo *philo)
 		return (philo->id - 1);
 }
 
-int	exit_error(int	error)
+int	exit_error(int error)
 {
 	if (error == 1)
 		printf("Input error\n");

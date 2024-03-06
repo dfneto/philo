@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:24:32 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/06 13:25:40 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/06 13:53:49 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	eat_enough(t_philo *philo)
 *	1 - if the philospher died
 *	0 - if the philospher did not die
 */
-int		philosopher_died(t_philo *philo)
+int	philosopher_died(t_philo *philo)
 {
 	long long		time_now;
 	int				ret;
@@ -45,7 +45,6 @@ int		philosopher_died(t_philo *philo)
 	}
 	pthread_mutex_unlock(&philo->m_last_meal);
 	return (ret);
-	
 }
 
 int	all_alive(t_god *god)
