@@ -1,5 +1,7 @@
-//./philo 200 400 350 60 1: consigo alimentar todo mundo
+//./philo 200 400 350 60 1: consigo alimentar todo mundo, mas se é ./philo 200 400 350 60 2 morre corretamente
 //./philo 200 400 350 60: morre em 00771 (não mais) e ainda imprime depois (as vezes)
+
+//Botar um break depois que os filos comeram o suficiente, assim se comeram o suficiente não devem mais dormir ou pensar
 
 ./philo 200 400 100 100 3: Julia consegue, eu morro antes
 ./philo 200 400 100 100: Julia vai até 4140 e trava, eu até 591 (e impro depois as vezes)
@@ -10,6 +12,7 @@
 // A Júlia sugere que seja porque usam detach
 
 //Faz sentido transformar o observador em uma thread?
+
 
 //------------------
 //DONE: Check if one philosopher died and finish execution
