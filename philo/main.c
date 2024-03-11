@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/06 17:14:59 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/11 19:53:16 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,11 @@ void	run_observer(t_god *god)
 				pthread_mutex_unlock(&god->mutex_all_alive);
 				break ;
 			}
-			pthread_mutex_lock(&god->philo[i].m_times_eaten);
+			pthread_mutex_lock(&god->philo[i].m_eat);
 			if (god->n_times_eat > 0
 				&& god->philo[i].times_eaten >= god->n_times_eat)
 				philos_fed++;
-			pthread_mutex_unlock(&god->philo[i].m_times_eaten);
+			pthread_mutex_unlock(&god->philo[i].m_eat);
 			i++;
 		}
 	}

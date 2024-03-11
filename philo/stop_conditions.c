@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:24:32 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/06 16:54:10 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/11 20:14:03 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ int	philosopher_died(t_philo *philo)
 	int				ret;
 
 	ret = 0;
-	pthread_mutex_lock(&philo->m_last_meal);
+	pthread_mutex_lock(&philo->m_eat);
 	time_now = get_time(philo->god->start);
 	if (time_now - philo->last_meal >= philo->god->time_to_die)
 	{
 		print(philo, DIE);
 		ret = 1;
 	}
-	pthread_mutex_unlock(&philo->m_last_meal);
+	pthread_mutex_unlock(&philo->m_eat);
 	return (ret);
 }
 

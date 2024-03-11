@@ -1,7 +1,15 @@
+//./philo 200 400 350 60 1: consigo alimentar todo mundo
+//./philo 200 400 350 60: morre em 00771 (não mais) e ainda imprime depois (as vezes)
+
+./philo 200 400 100 100 3: Julia consegue, eu morro antes
+./philo 200 400 100 100: Julia vai até 4140 e trava, eu até 591 (e impro depois as vezes)
+
 // Depois que morro eu demoro pra sair. Isso se percebe melhor quanto tenho muitos philos, contudo
 // se eu como o suficiente saio rápido. Ex: ./philo 200 4000 10 10 2 (termina a aplicação rapidamente)
 // vs ./philo 200 200 100 100 (morre e demora para terminar a aplicação)
 // A Júlia sugere que seja porque usam detach
+
+//Faz sentido transformar o observador em uma thread?
 
 //------------------
 //DONE: Check if one philosopher died and finish execution

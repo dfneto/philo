@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:16:29 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/06 17:15:40 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/11 20:15:43 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,7 @@ void	create_philos(t_god *god)
 		god->philo[i].id = i;
 		god->philo[i].times_eaten = 0;
 		god->philo[i].god = god;
-		god->philo[i].last_meal = get_time(god->start);
-		pthread_mutex_init(&god->philo[i].m_last_meal, NULL);
-		pthread_mutex_init(&god->philo[i].m_times_eaten, NULL);
+		pthread_mutex_init(&god->philo[i].m_eat, NULL);
 		i++;
 	}
 }
@@ -69,8 +67,7 @@ int	clean_and_destroy(t_god *god)
 	while (i < god->n_philo)
 	{
 		pthread_mutex_destroy(&god->mutex_fork[i]);
-		pthread_mutex_destroy(&god->philo[i].m_last_meal);
-		pthread_mutex_destroy(&god->philo[i].m_times_eaten);
+		pthread_mutex_destroy(&god->philo[i].m_eat);
 		i++;
 	}
 	free(god->mutex_fork);

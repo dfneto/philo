@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 10:47:05 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/06 20:42:49 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/11 20:14:36 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,14 @@ void	execute_core_rotine(t_philo *philo, t_god *god, int left)
 	print(philo, FORK);
 	pthread_mutex_lock(&god->mutex_fork[left]);
 	print(philo, FORK);
+	pthread_mutex_lock(&philo->m_eat);
 	print(philo, EAT);
+	philo->last_meal = get_time(god->start);
+	philo->times_eaten++;
+	pthread_mutex_unlock(&philo->m_eat);
 	ft_sleep(god->time_to_eat);
 	pthread_mutex_unlock(&god->mutex_fork[philo->id]);
 	pthread_mutex_unlock(&god->mutex_fork[left]);
-	pthread_mutex_lock(&philo->m_times_eaten);
-	philo->times_eaten++;
-	pthread_mutex_unlock(&philo->m_times_eaten);
-	pthread_mutex_lock(&philo->m_last_meal);
-	philo->last_meal = get_time(god->start);
-	pthread_mutex_unlock(&philo->m_last_meal);
 	print(philo, SLEEP);
 	ft_sleep(god->time_to_sleep);
 	print(philo, THINK);
@@ -62,6 +60,7 @@ void	*routine(void *philo_data)
 	left = define_left_fork(philo);
 	pthread_mutex_lock(&god->m_start);
 	pthread_mutex_unlock(&god->m_start);
+	philo->last_meal = get_time(god->start);
 	while (all_alive(god) && !eat_enough(philo))
 		execute_core_rotine(philo, god, left);
 	return (NULL);
