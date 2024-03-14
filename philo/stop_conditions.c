@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:24:32 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/11 20:14:03 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/14 18:38:19 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	philosopher_died(t_philo *philo)
 		ret = 1;
 	}
 	pthread_mutex_unlock(&philo->m_eat);
+	// usleep(50);
 	return (ret);
 }
 

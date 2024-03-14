@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 10:47:05 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/11 20:14:36 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/14 18:36:12 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ void	execute_core_rotine(t_philo *philo, t_god *god, int left)
 	philo->last_meal = get_time(god->start);
 	philo->times_eaten++;
 	pthread_mutex_unlock(&philo->m_eat);
-	ft_sleep(god->time_to_eat);
+	ft_sleep(god->time_to_eat);  //nao executar quando morre
 	pthread_mutex_unlock(&god->mutex_fork[philo->id]);
 	pthread_mutex_unlock(&god->mutex_fork[left]);
-	print(philo, SLEEP);
+	print(philo, SLEEP); //nao executar quando morre
 	ft_sleep(god->time_to_sleep);
 	print(philo, THINK);
 }
