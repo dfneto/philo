@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 10:47:05 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/14 18:36:12 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/15 15:12:58 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ void	*deal_one_child_case(t_philo *philo)
 	return (NULL);
 }
 
+int	should_execute(t_god *god, t_philo *philo)
+{
+	return (all_alive(god) && !eat_enough(philo));
+}
+
 void	execute_core_rotine(t_philo *philo, t_god *god, int left)
 {
 	pthread_mutex_lock(&god->mutex_fork[philo->id]);
@@ -31,11 +36,13 @@ void	execute_core_rotine(t_philo *philo, t_god *god, int left)
 	philo->last_meal = get_time(god->start);
 	philo->times_eaten++;
 	pthread_mutex_unlock(&philo->m_eat);
-	ft_sleep(god->time_to_eat);  //nao executar quando morre
+	if (should_execute(god, philo))
+		ft_sleep(god->time_to_eat); 
 	pthread_mutex_unlock(&god->mutex_fork[philo->id]);
 	pthread_mutex_unlock(&god->mutex_fork[left]);
-	print(philo, SLEEP); //nao executar quando morre
-	ft_sleep(god->time_to_sleep);
+	print(philo, SLEEP);
+	if (should_execute(god, philo))
+		ft_sleep(god->time_to_sleep);
 	print(philo, THINK);
 }
 
