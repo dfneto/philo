@@ -1,5 +1,6 @@
 //Falta duas coisas pra mim: melhorar a performance e antes implementar o check se comeram o suficiente.
-
+Ver como a Julia faz o comeu suficiente.
+Implementar o meu e depois pedir ajuda com a performance
 //PROBLEMA DE PERFORMANCE PORQUE MORRO RÁPIDO
 //./philo 4 411 200 200 nenhum deve morrer! Eu morro relativamente rápido comparado aos outros
 ./philo 200 400 100 100: Julia vai até 4140 e trava, eu até 400 e morro (não imprimo mais nada depois)
