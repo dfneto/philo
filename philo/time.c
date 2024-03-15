@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:41:27 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/06 20:36:43 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/15 16:11:09 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,10 @@ long long	get_time(long long start)
 */
 long long	get_current_time(void)
 {
-	long long		time_now;
 	struct timeval	now;
 
 	gettimeofday(&now, NULL);
-	time_now = now.tv_sec * 1000 + now.tv_usec / 1000;
-	return (time_now);
+	return (now.tv_sec * 1000 + now.tv_usec / 1000);
 }
 
 /*
@@ -60,5 +58,4 @@ void	ft_sleep(long long time)
 			break ;
 		usleep(50);
 	}
-	usleep(10);
 }

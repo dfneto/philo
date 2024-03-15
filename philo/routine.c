@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 10:47:05 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/15 15:12:58 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/15 16:15:39 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,15 @@ void	execute_core_rotine(t_philo *philo, t_god *god, int left)
 	print(philo, FORK);
 	pthread_mutex_lock(&god->mutex_fork[left]);
 	print(philo, FORK);
-	pthread_mutex_lock(&philo->m_eat);
-	print(philo, EAT);
-	philo->last_meal = get_time(god->start);
-	philo->times_eaten++;
-	pthread_mutex_unlock(&philo->m_eat);
 	if (should_execute(god, philo))
+	{
+		pthread_mutex_lock(&philo->m_eat);
+		print(philo, EAT);
+		philo->last_meal = get_time(god->start);
+		philo->times_eaten++;
+		pthread_mutex_unlock(&philo->m_eat);
 		ft_sleep(god->time_to_eat); 
+	}
 	pthread_mutex_unlock(&god->mutex_fork[philo->id]);
 	pthread_mutex_unlock(&god->mutex_fork[left]);
 	print(philo, SLEEP);

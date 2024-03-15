@@ -1,12 +1,12 @@
-//./philo 200 400 350 60 1: consigo alimentar todo mundo, mas se é ./philo 200 400 350 60 2 morre corretamente
-//./philo 200 400 350 60: morre em 00771 e não 410 (resolvido) e ainda imprime depois (as vezes)
+//PROBLEMA DE PERFORMANCE PORQUE MORRO RÁPIDO
+//./philo 4 411 200 200 nenhum deve morrer! Eu morro relativamente rápido comparado aos outros
+./philo 200 400 100 100: Julia vai até 4140 e trava, eu até 400 e morro (não imprimo mais nada depois)
+./philo 200 400 100 100 3: Julia consegue, eu morro antes
+
+//DONE ./philo 200 400 350 60: morre em 00771 e não 410 (resolvido) e ainda imprime depois (resolvido)
+//./philo 200 400 350 60 1: consiguia alimentar todo mundo, mas se é ./philo 200 400 350 60 2 morria corretamente
 
 //Botar um break depois que os filos comeram o suficiente, assim se comeram o suficiente não devem mais dormir ou pensar
-
-./philo 200 400 100 100 3: Julia consegue, eu morro antes
-./philo 200 400 100 100: Julia vai até 4140 e trava, eu até 591 (e impro depois as vezes)
-
-//./philo 4 411 200 200 nenhum deve morrer!
 
 //Faz sentido transformar o observador em uma thread?
 

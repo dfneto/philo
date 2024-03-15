@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/15 15:31:32 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/15 16:21:09 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	run_observer(t_god *god)
 				pthread_mutex_lock(&god->mutex_all_alive); //Acho que posso remover isso e simplesmente sair do run observer como a julia faz
 				god->all_alive = 0;
 				pthread_mutex_unlock(&god->mutex_all_alive);
+				usleep(50);
 				print(&god->philo[i], DIE);
 				return ;
 			}
