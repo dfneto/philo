@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/15 16:21:09 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/15 16:37:03 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,12 @@ void	run_observer(t_god *god)
 				print(&god->philo[i], DIE);
 				return ;
 			}
+			pthread_mutex_lock(&god->philo[i].m_eat);
+			if (god->n_times_eat > 0 && god->philo[i].times_eaten == god->n_times_eat) //se um philo comeu o suficiente ...
+			{
+				//TODO: implementar se os filósofos comeram o suficiente
+			}
+			pthread_mutex_unlock(&god->philo[i].m_eat);
 			i++;
 		}
 		// i = 0;

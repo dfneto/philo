@@ -1,3 +1,5 @@
+//Falta duas coisas pra mim: melhorar a performance e antes implementar o check se comeram o suficiente.
+
 //PROBLEMA DE PERFORMANCE PORQUE MORRO RÁPIDO
 //./philo 4 411 200 200 nenhum deve morrer! Eu morro relativamente rápido comparado aos outros
 ./philo 200 400 100 100: Julia vai até 4140 e trava, eu até 400 e morro (não imprimo mais nada depois)
@@ -7,7 +9,6 @@
 //./philo 200 400 350 60 1: consiguia alimentar todo mundo, mas se é ./philo 200 400 350 60 2 morria corretamente
 
 //Botar um break depois que os filos comeram o suficiente, assim se comeram o suficiente não devem mais dormir ou pensar
-
 //Faz sentido transformar o observador em uma thread?
 
 
