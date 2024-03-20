@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/15 16:37:03 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/20 16:17:54 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,9 @@
 
 void	run_observer(t_god *god)
 {
-	// int		philos_fed;
 	int		i;
 
 	i = 0;
-	// philos_fed = 0;
 	while (god->all_alive)
 	{
 		i = 0;
@@ -38,7 +36,7 @@ void	run_observer(t_god *god)
 		{
 			if (philosopher_died(&god->philo[i]))
 			{
-				pthread_mutex_lock(&god->mutex_all_alive); //Acho que posso remover isso e simplesmente sair do run observer como a julia faz
+				pthread_mutex_lock(&god->mutex_all_alive);
 				god->all_alive = 0;
 				pthread_mutex_unlock(&god->mutex_all_alive);
 				usleep(50);
@@ -46,27 +44,11 @@ void	run_observer(t_god *god)
 				return ;
 			}
 			pthread_mutex_lock(&god->philo[i].m_eat);
-			if (god->n_times_eat > 0 && god->philo[i].times_eaten == god->n_times_eat) //se um philo comeu o suficiente ...
-			{
-				//TODO: implementar se os filósofos comeram o suficiente
-			}
+			if (god->n_times_eat > 0 && god->fed_philos == god->n_philo)
+				return ;
 			pthread_mutex_unlock(&god->philo[i].m_eat);
 			i++;
 		}
-		// i = 0;
-		// while (i < god->n_philo)
-		// {
-		// 	pthread_mutex_lock(&god->philo[i].m_eat);
-		// 	if (god->n_times_eat > 0 && god->philo[i].times_eaten == god->n_times_eat) //se um philo comeu o suficiente ...
-		// 	{
-		// 		if (i == god->n_philo - 1)
-		// 			philos_fed = 1; //o ultimo comeu o suficiente
-		// 	}
-		// 	pthread_mutex_unlock(&god->philo[i].m_eat);
-		// 	if (god->n_times_eat > 0 && god->philo[i].times_eaten < god->n_times_eat) //se um philo NÃO comeu o suficiente ...
-		// 		break ;
-		// 	i++;
-		// }
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:34:11 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/11 20:16:13 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/20 13:12:34 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_philo
 typedef struct s_god
 {
 	int				all_alive;
+	int				fed_philos;
 	int				n_times_eat;
 	int				time_to_die;
 	int				time_to_eat;

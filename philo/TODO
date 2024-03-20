@@ -1,17 +1,13 @@
-//Falta duas coisas pra mim: melhorar a performance e antes implementar o check se comeram o suficiente.
-Ver como a Julia faz o comeu suficiente.
-Implementar o meu e depois pedir ajuda com a performance
 //PROBLEMA DE PERFORMANCE PORQUE MORRO RÁPIDO
-//./philo 4 411 200 200 nenhum deve morrer! Eu morro relativamente rápido comparado aos outros
+Caso 1: ./philo 4 411 200 200 nenhum deve morrer! Eu morro relativamente rápido comparado aos outros
+Caso 2: 
 ./philo 200 400 100 100: Julia vai até 4140 e trava, eu até 400 e morro (não imprimo mais nada depois)
 ./philo 200 400 100 100 3: Julia consegue, eu morro antes
+./philo 200 400 100 100 3 > o: quase sempre consigo comer o suficiente e não morrer
+./philo 200 400 100 100 3: nunca consigo comer o suficiente e sempre morro
 
-//DONE ./philo 200 400 350 60: morre em 00771 e não 410 (resolvido) e ainda imprime depois (resolvido)
-//./philo 200 400 350 60 1: consiguia alimentar todo mundo, mas se é ./philo 200 400 350 60 2 morria corretamente
 
-//Botar um break depois que os filos comeram o suficiente, assim se comeram o suficiente não devem mais dormir ou pensar
 //Faz sentido transformar o observador em uma thread?
-
 
 //------------------
 //DONE: Check if one philosopher died and finish execution
@@ -65,3 +61,7 @@ Implementar o meu e depois pedir ajuda com a performance
 // NÃO SEI PORQUE O MEU TA IGUAL O DO SEBAS INCLUSIME O MAKEFILE! 
 // Solução: porque as threads seguem executando (dormindo, comendo, mutex...) e tenho que esperar elas sairem do while para fazer o join
 //DONE: imprime depois de morrer
+//DONE ./philo 200 400 350 60: morre em 00771 e não 410 (resolvido) e ainda imprime depois (resolvido)
+//./philo 200 400 350 60 1: conseguia alimentar todo mundo, mas se é ./philo 200 400 350 60 2 morria corretamente
+//DONE: o programa deve parar quando todos comeram o suficiente
+//DONE: Ver como a Julia faz o comeu suficiente - ok
