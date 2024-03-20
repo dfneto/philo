@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:01:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/03/20 16:17:54 by davifern         ###   ########.fr       */
+/*   Updated: 2024/03/20 17:02:15 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,36 +79,10 @@ int	main(int argc, char **argv)
 	if (!god)
 		return (exit_error(2));
 	create_philos(god);
-	// if (create_threads(god))
-	// 	return (clean_and_destroy(god), exit_error(3));
-	
-	pthread_t	*threads;
-	threads = (pthread_t *)malloc(sizeof(pthread_t) * god->n_philo);
-	if (!threads)
-		return (exit_error(2));
-	int	i;
-	i = 0;
-	pthread_mutex_lock(&god->m_start);
-	while (i < god->n_philo)
-	{
-		if (pthread_create(&threads[i], NULL, routine, &god->philo[i]))
-			return (3);
-		i++;
-	}
-	god->start = get_current_time();
-	pthread_mutex_unlock(&god->m_start);
-
-
+	if (create_threads(god))
+		return (clean_and_destroy(god), exit_error(3));
 	run_observer(god);
-	// if (wait_threads(god))
-	// 	return (clean_and_destroy(god), exit_error(4));
-	while (--i > 0)
-	{
-		if (pthread_join(threads[i], NULL))
-			return (4);
-	}
-
-
-
+	if (wait_threads(god))
+		return (clean_and_destroy(god), exit_error(4));
 	return (clean_and_destroy(god));
 }
